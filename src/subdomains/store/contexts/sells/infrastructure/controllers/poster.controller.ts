@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from "@nestjs/common"
+import { Body, Controller, Patch, Post } from "@nestjs/common"
 import { UpdateImageUseCase, UpdatePricePosterUseCase, UpdateTypePosterUseCase } from "../../application/use-cases/counter/poster"
 import { UpdatedImagePublisher } from "../messaging/publisher/counter/poster/updated-image.message-publisher"
 import { UpdatedPricePublisher } from "../messaging/publisher/counter/poster/updated-price.message-publisher"
@@ -13,9 +13,7 @@ import { PosterUpdateTypeCommand } from "../utils/commands/counter/poster/update
 export class PosterController {
 
     constructor(
-        private readonly counterService: CounterService,
         private readonly posterService: PosterService,
-        private readonly productService: ProductService,
 
         private readonly updatedImagePublisher: UpdatedImagePublisher,
         private readonly updatedPricePublisher: UpdatedPricePublisher,
@@ -23,30 +21,30 @@ export class PosterController {
 
     ) { }
 
-    // @Post("/updated-image")
-    // async updatedImage(@Body() command: PosterUpdateImageCommand) {
-    //     const useCase = new UpdateImageUseCase(
-    //         this.productService,
-    //         this.updatedImagePublisher
-    //     )
-    //     return await useCase.execute(command)
-    // }
+    @Patch("/updated-image")
+    async updatedImage(@Body() command: PosterUpdateImageCommand) {
+        const useCase = new UpdateImageUseCase(
+            this.posterService,
+            this.updatedImagePublisher
+        )
+        return await useCase.execute(command)
+    }
 
-    // @Post("/updated-price")
-    // async updatedPrice(@Body() command: PosterUpdatePriceCommand) {
-    //     const useCase = new UpdatePricePosterUseCase(
-    //         this.productService,
-    //         this.updatedPricePublisher
-    //     )
-    //     return await useCase.execute(command)
-    // }
+    @Patch("/updated-price")
+    async updatedPrice(@Body() command: PosterUpdatePriceCommand) {
+        const useCase = new UpdatePricePosterUseCase(
+            this.posterService,
+            this.updatedPricePublisher
+        )
+        return await useCase.execute(command)
+    }
 
-    // @Post("/updated-type")
-    // async updatedType(@Body() command: PosterUpdateTypeCommand) {
-    //     const useCase = new UpdateTypePosterUseCase(
-    //         this.productService,
-    //         this.updatedTypePublisher
-    //     )
-    //     return await useCase.execute(command)
-    // }
+    @Patch("/updated-type")
+    async updatedType(@Body() command: PosterUpdateTypeCommand) {
+        const useCase = new UpdateTypePosterUseCase(
+            this.posterService,
+            this.updatedTypePublisher
+        )
+        return await useCase.execute(command)
+    }
 }

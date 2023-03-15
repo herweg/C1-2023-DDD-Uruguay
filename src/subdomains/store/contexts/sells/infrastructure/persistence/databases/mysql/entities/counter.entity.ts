@@ -1,5 +1,5 @@
 import { CounterDomainEntity } from "src/subdomains/store/contexts/sells/domain";
-import { Entity, PrimaryGeneratedColumn, JoinColumn, OneToOne, OneToMany, ManyToOne } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, JoinColumn, ManyToOne } from 'typeorm';
 import { PosterMySqlEntity } from "./poster.entity";
 import { ProductMySqlEntity } from "./product.entity";
 

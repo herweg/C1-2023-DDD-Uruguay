@@ -1,5 +1,5 @@
-import { IsNumber, IsString } from "class-validator";
-import { IsDate } from "class-validator/types/decorator/decorators";
+import { IsDate, IsNumber, IsString } from "class-validator";
+
 import { IProductUpdateExpirationCommand } from "src/subdomains/store";
 
 export class ProductUpdateExpirationCommand implements IProductUpdateExpirationCommand {

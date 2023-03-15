@@ -10,9 +10,9 @@ import { UpdatedPricePublisher } from "./publisher/counter/poster/updated-price.
 import { UpdatedTypePublisher } from "./publisher/counter/poster/updated-type.message-publisher";
 import { UpdatedExpirationPublisher } from "./publisher/counter/product/updated-expiration.message-publisher";
 import { UpdatedStockPublisher } from "./publisher/counter/product/updated-stock.message-publisher";
-import { CounterController } from "./subscriber/counter-created.subscriber";
-import { ProductController } from '../controllers/product.controller';
-import { PosterController } from "../controllers/poster.controller";
+import { CounterController } from "./subscriber/counter.subscriber";
+import { PosterController } from "./subscriber/poster.subscriber";
+import { ProductController } from "./subscriber/product.subscriber";
 
 /**
  * name: el nombre del cliente.
@@ -51,8 +51,8 @@ import { PosterController } from "../controllers/poster.controller";
     ],
     controllers: [
         CounterController,
-        PosterController,
-        ProductController
+        ProductController,
+        PosterController
     ],
     providers: [
         CreatedCounterPublisher,

@@ -4,6 +4,8 @@ import { GettedPosterEventPublisherBase, GettedProductEventPublisherBase } from 
 import { CreatedCounterPublisher } from "../messaging/publisher/counter/created-counter.message-publisher";
 import { CreatedPosterPublisher } from "../messaging/publisher/counter/created-poster.message-publisher";
 import { CreatedProductPublisher } from "../messaging/publisher/counter/created-product.message-publisher";
+import { GettedPosterPublisher } from "../messaging/publisher/counter/getted-poster.message-publisher";
+import { GettedProductPublisher } from "../messaging/publisher/counter/getted-product.message-publisher";
 import { CounterService, PosterService, ProductService } from "../persistence/services";
 import { CounterCreateCounterCommand } from "../utils/commands/counter/create-counter.command";
 import { CounterCreatePosterCommand } from "../utils/commands/counter/create-poster.command";
@@ -22,8 +24,8 @@ export class CounterController {
         private readonly createdCounterPublisher: CreatedCounterPublisher,
         private readonly createdProductPublisher: CreatedProductPublisher,
         private readonly createdPosterPublisher: CreatedPosterPublisher,
-        private readonly gettedPosterEventPublisherBase: GettedPosterEventPublisherBase,
-        private readonly gettedProductEventPublisherBase: GettedProductEventPublisherBase
+        private readonly gettedPosterEventPublisher: GettedPosterPublisher,
+        private readonly gettedProductEventPublisher: GettedProductPublisher
 
     ) { }
 
@@ -58,7 +60,7 @@ export class CounterController {
     async getPoster(@Body() command: GetPosterCommand) {
         const useCase = new GetPosterUseCase(
             this.posterService,
-            this.gettedPosterEventPublisherBase
+            this.gettedPosterEventPublisher
         )
         return await useCase.execute(command)
     }
@@ -67,7 +69,7 @@ export class CounterController {
     async getProduct(@Body() command: GetProductCommand) {
         const useCase = new GetProductUseCase(
             this.productService,
-            this.gettedProductEventPublisherBase
+            this.gettedProductEventPublisher
         )
         return await useCase.execute(command)
     }

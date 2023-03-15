@@ -35,13 +35,13 @@ export class CounterRepository
         const counterToUpdate = await this.repository.findOneBy({ counterId })
         if (!counterToUpdate) { throw new BadRequestException(`Counter with id: ${counterId} not found`) }
         const updatedCounter = { ...counterToUpdate, ...entity }
-        return updatedCounter
+        return await this.repository.save(updatedCounter)
     }
 
     async delete(counterId: string): Promise<boolean> {
         const counter = await this.repository.findOneBy({ counterId })
         if (!counter) throw new BadRequestException(`Counter with id: ${counterId} not found`)
-
+        await this.repository.delete(counter)
         return true
     }
 }

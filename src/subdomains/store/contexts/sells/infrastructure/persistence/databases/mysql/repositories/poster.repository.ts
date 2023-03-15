@@ -35,13 +35,13 @@ export class PosterRepository
         const posterToUpdate = await this.repository.findOneBy({ posterId })
         if (!posterToUpdate) { throw new BadRequestException(`Poster with id: ${posterId} not found`) }
         const updatedPoster = { ...posterToUpdate, ...entity }
-        return updatedPoster
+        return await this.repository.save(updatedPoster)
     }
 
     async delete(posterId: string): Promise<boolean> {
         const poster = await this.repository.findOneBy({ posterId })
         if (!poster) throw new BadRequestException(`Poster with id: ${posterId} not found`)
-
+        await this.repository.delete(poster)
         return true
     }
 }

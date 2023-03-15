@@ -149,6 +149,7 @@ export class CounterAggregate implements
         this.productUpdatedStockEventPublisherBase.publish()
         return stockResult
     }
+    
     async updateProductPrice(product: IProductUpdatePriceCommand): Promise<ProductMySqlEntity> {
         if (!this.productService) throw new AggregateRootException("Product service not found")
         if (!this.productUpdatedPriceEventPublisherBase) throw new AggregateRootException("Updated Price event not found")

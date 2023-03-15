@@ -35,13 +35,13 @@ export class ProductRepository
         const productToUpdate = await this.repository.findOneBy({ productId })
         if (!productToUpdate) { throw new BadRequestException(`Product with id: ${productId} not found`) }
         const updatedProduct = { ...productToUpdate, ...entity }
-        return updatedProduct
+        return await this.repository.save(updatedProduct)
     }
 
     async delete(productId: string): Promise<boolean> {
         const product = await this.repository.findOneBy({ productId })
         if (!product) throw new BadRequestException(`Product with id: ${productId} not found`)
-
+        await this.repository.delete(product)
         return true
     }
 }
