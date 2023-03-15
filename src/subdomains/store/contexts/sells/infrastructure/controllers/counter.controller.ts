@@ -1,6 +1,5 @@
 import { Body, Controller, Get, Post } from "@nestjs/common";
 import { CreateCounterUseCase, CreatePosterUseCase, CreateProductUseCase, GetPosterUseCase, GetProductUseCase } from "../../application";
-import { GettedPosterEventPublisherBase, GettedProductEventPublisherBase } from "../../domain";
 import { CreatedCounterPublisher } from "../messaging/publisher/counter/created-counter.message-publisher";
 import { CreatedPosterPublisher } from "../messaging/publisher/counter/created-poster.message-publisher";
 import { CreatedProductPublisher } from "../messaging/publisher/counter/created-product.message-publisher";
@@ -26,7 +25,6 @@ export class CounterController {
         private readonly createdPosterPublisher: CreatedPosterPublisher,
         private readonly gettedPosterEventPublisher: GettedPosterPublisher,
         private readonly gettedProductEventPublisher: GettedProductPublisher
-
     ) { }
 
     @Post("/create-counter")

@@ -3,11 +3,10 @@ import { UpdateImageUseCase, UpdatePricePosterUseCase, UpdateTypePosterUseCase }
 import { UpdatedImagePublisher } from "../messaging/publisher/counter/poster/updated-image.message-publisher"
 import { UpdatedPricePublisher } from "../messaging/publisher/counter/poster/updated-price.message-publisher"
 import { UpdatedTypePublisher } from "../messaging/publisher/counter/poster/updated-type.message-publisher"
-import { CounterService, PosterService, ProductService } from "../persistence/services"
+import { PosterService } from "../persistence/services"
 import { PosterUpdateImageCommand } from "../utils/commands/counter/poster/update-image.command"
 import { PosterUpdatePriceCommand } from "../utils/commands/counter/poster/update-price.command"
 import { PosterUpdateTypeCommand } from "../utils/commands/counter/poster/update-type.command"
-
 
 @Controller('poster')
 export class PosterController {

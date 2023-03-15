@@ -1,15 +1,21 @@
 import { Module } from "@nestjs/common";
 import { ClientsModule, Transport } from "@nestjs/microservices";
+
 import { CreatedCounterPublisher } from "./publisher/counter/created-counter.message-publisher";
 import { CreatedPosterPublisher } from "./publisher/counter/created-poster.message-publisher";
 import { CreatedProductPublisher } from "./publisher/counter/created-product.message-publisher";
 import { GettedPosterPublisher } from "./publisher/counter/getted-poster.message-publisher";
 import { GettedProductPublisher } from "./publisher/counter/getted-product.message-publisher";
+//Poster
 import { UpdatedImagePublisher } from "./publisher/counter/poster/updated-image.message-publisher";
 import { UpdatedPricePublisher } from "./publisher/counter/poster/updated-price.message-publisher";
 import { UpdatedTypePublisher } from "./publisher/counter/poster/updated-type.message-publisher";
+//Product
 import { UpdatedExpirationPublisher } from "./publisher/counter/product/updated-expiration.message-publisher";
 import { UpdatedStockPublisher } from "./publisher/counter/product/updated-stock.message-publisher";
+import { UpdatedPricePublisher as ProductUpdatedPricePublisher } from "./publisher/counter/product/updated-price.message-publisher";
+import { UpdatedTypePublisher as ProductUpdatedTypePublisher } from "./publisher/counter/product/updated-type.message-publisher";
+
 import { CounterController } from "./subscriber/counter.subscriber";
 import { PosterController } from "./subscriber/poster.subscriber";
 import { ProductController } from "./subscriber/product.subscriber";
@@ -55,33 +61,39 @@ import { ProductController } from "./subscriber/product.subscriber";
         PosterController
     ],
     providers: [
+        //Counter
         CreatedCounterPublisher,
         CreatedPosterPublisher,
         CreatedProductPublisher,
         GettedPosterPublisher,
         GettedProductPublisher,
 
+        //product
         UpdatedExpirationPublisher,
-        UpdatedPricePublisher,
         UpdatedStockPublisher,
-        UpdatedTypePublisher,
+        ProductUpdatedPricePublisher,
+        ProductUpdatedTypePublisher,
 
+        //poster
         UpdatedImagePublisher,
         UpdatedPricePublisher,
         UpdatedTypePublisher
     ],
     exports: [
+        //counter
         CreatedCounterPublisher,
         CreatedPosterPublisher,
         CreatedProductPublisher,
         GettedPosterPublisher,
         GettedProductPublisher,
 
+        //product
         UpdatedExpirationPublisher,
-        UpdatedPricePublisher,
         UpdatedStockPublisher,
-        UpdatedTypePublisher,
+        ProductUpdatedPricePublisher,
+        ProductUpdatedTypePublisher,
 
+        //poster
         UpdatedImagePublisher,
         UpdatedPricePublisher,
         UpdatedTypePublisher
