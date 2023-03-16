@@ -15,15 +15,15 @@ export class TicketDomainEntity implements ITicketDomainEntity {
     date: Date | DateValueObject;
 
     constructor(data?: ITicketDomainEntity) {
-        if (data.ticketId) this.ticketId = data.ticketId
-        else this.ticketId = uuid()
-        if (data.productId) this.productId = data.productId
+        if (data?.ticketId) this.ticketId = data.ticketId
+        else this.ticketId = new IdValueObject(uuid())
+        if (data?.productId) this.productId = data.productId
 
-        if (data.client) this.client = data.client
-        if (data.seller) this.seller = data.seller
-        if (data.date) this.date = data.date
-        if (data.quantity) this.quantity = data.quantity
-        if (data.type) this.type = data.type
-        if (data.totalPrice) this.totalPrice = data.totalPrice
+        if (data?.client) this.client = data.client
+        if (data?.seller) this.seller = data.seller
+        if (data?.date) this.date = data.date
+        if (data?.quantity) this.quantity = data.quantity
+        if (data?.type) this.type = data.type
+        if (data?.totalPrice) this.totalPrice = data.totalPrice
     }
 }

@@ -8,10 +8,10 @@ export class SellerDomainEntity implements ISellerDomainEntity {
     salary?: number | SalaryValueObject;
 
     constructor(data?: ISellerDomainEntity) {
-        if (data.sellerId) this.sellerId = data.sellerId
-        else this.sellerId = uuid()
-        if (data.name) this.name = data.name
-        if (data.salary) this.salary = data.salary
+        if (data?.sellerId) this.sellerId = data.sellerId
+        else this.sellerId = new IdValueObject(uuid())
+        if (data?.name) this.name = data.name
+        if (data?.salary) this.salary = data.salary
     }
 
 }

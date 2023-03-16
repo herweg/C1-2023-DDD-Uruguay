@@ -5,7 +5,7 @@ import { CounterMySqlEntity } from './counter.entity';
 
 
 
-@Entity("poster", { schema: "public" })
+@Entity({ name: "poster" })
 export class PosterMySqlEntity extends PosterDomainEntity {
 
     @PrimaryGeneratedColumn('uuid')

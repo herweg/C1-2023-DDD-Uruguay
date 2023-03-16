@@ -8,7 +8,6 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
 
     constructor(private readonly configService: ConfigService) { }
     
-
     async createTypeOrmOptions(connectionName?: string): Promise<TypeOrmModuleOptions> {
         //const dbHost = this.configService.get<string>('DB_HOST')
         //const dbPort = this.configService.get<number>('DB_PORT')
@@ -36,8 +35,7 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
                 CounterMySqlEntity
             ],
             synchronize: true,
-            //logging: true
+            logging: true
         }
     }
-    
 }

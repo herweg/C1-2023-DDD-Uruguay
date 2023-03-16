@@ -1,4 +1,5 @@
 import { ValueObjectBase } from "src/libs";
+import { IsNumber } from "src/libs/validations/is-number.validations";
 
 export class PriceValueObject extends ValueObjectBase<number>{
     constructor(value?: number) {
@@ -13,7 +14,7 @@ export class PriceValueObject extends ValueObjectBase<number>{
     }
 
     private validatePrice(): void {
-        if (this.value && !isNaN(this.value)) {
+        if (this.value && isNaN(this.value)) {
             const error = {
                 field: "Price",
                 message: `${this.value} is not a valid number`

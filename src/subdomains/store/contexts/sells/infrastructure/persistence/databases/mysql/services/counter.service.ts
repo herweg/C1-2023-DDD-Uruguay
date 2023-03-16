@@ -33,28 +33,28 @@ export class CounterMySqlService
     }
 
     async createPoster(poster: ICounterCreatePosterCommand): Promise<PosterMySqlEntity> {
-        const checkPoster = await this.posterRepository.findById(poster.posterId)
-        if (checkPoster) throw new BadRequestException(`Poster with id: ${poster.posterId} alredy exists`)
-        const newPoster = this.posterRepository.create(poster)
+        //const checkPoster = await this.posterRepository.findById(poster.posterId)
+        //if (checkPoster) throw new BadRequestException(`createPoster Poster with id: ${poster.posterId} alredy exists`)
+        const newPoster = await this.posterRepository.create(poster)
         return newPoster
     }
 
     async createProduct(product: ICounterCreateProductCommand): Promise<ProductMySqlEntity> {
-        const checkProduct = await this.productRepository.findById(product.productId)
-        if (checkProduct) throw new BadRequestException(`Product with id: ${product.productId} alredy exists`)
+        //const checkProduct = await this.productRepository.findById(product.productId)
+        //if (checkProduct) throw new BadRequestException(`createProduct Product with id: ${product.productId} alredy exists`)
         const newProduct = this.productRepository.create(product)
         return newProduct
     }
 
     async getPoster(posterId: string): Promise<PosterMySqlEntity> {
         const checkPoster = await this.posterRepository.findById(posterId)
-        if (!checkPoster) throw new BadRequestException(`Poster with id: ${posterId} not found`)
+        if (!checkPoster) throw new BadRequestException(`getPoster Poster with id: ${posterId} not found`)
         return checkPoster
     }
 
     async getProduct(productId: string): Promise<ProductMySqlEntity> {
         const checkProduct = await this.productRepository.findById(productId)
-        if (!checkProduct) throw new BadRequestException(`Product with id: ${productId} not found`)
+        if (!checkProduct) throw new BadRequestException(`getProduct Product with id: ${productId} not found`)
         return checkProduct
     }
 

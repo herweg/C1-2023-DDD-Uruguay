@@ -2,7 +2,7 @@ import { ValueObjectBase } from "src/libs"
 
 export class StockValueObject extends ValueObjectBase<number>{
     constructor(value?: number) {
-        super(value)
+        super(value ? value : 3)
     }
 
     validateData(): void {
@@ -13,7 +13,7 @@ export class StockValueObject extends ValueObjectBase<number>{
     }
 
     private validateStock(): void {
-        if (this.value && !isNaN(this.value)) {
+        if (this.value && isNaN(this.value)) {
             const error = {
                 field: "Stock",
                 message: `${this.value} is not a valid number`

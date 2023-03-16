@@ -2,14 +2,13 @@ import { IUseCase, ValueObjectErrorHandler, ValueObjectException } from "src/lib
 import {
     CounterAggregate,
     CounterCreatedPosterEventPublisherBase,
-    DateValueObject,
     FlavourValueObject,
     ICounterCreatePosterCommand,
+    ICounterDomainService,
     ICounterPosterCreatedResponse,
     IdValueObject,
     ImageValueObject,
     IPosterDomainEntity,
-    IPosterDomainService,
     PosterDomainEntity,
     PosterTypeValueObject,
     PriceValueObject,
@@ -27,12 +26,12 @@ export class CreatePosterUseCase<
     private readonly counterAggregateRoot: CounterAggregate
 
     constructor(
-        private readonly posterService: IPosterDomainService,
+        private readonly counterService: ICounterDomainService,
         private readonly counterCreatedPosterEventPublisherBase: CounterCreatedPosterEventPublisherBase
     ) {
         super();
         this.counterAggregateRoot = new CounterAggregate({
-            posterService,
+            counterService,
             counterCreatedPosterEventPublisherBase
         })
     }
@@ -49,13 +48,13 @@ export class CreatePosterUseCase<
         return this.executePosterAggregateRoot(poster)
     }
 
-    createValueObject(command: Command): IPosterDomainEntity {
-        const posterId = new IdValueObject(command.posterId)
-        const type = new PosterTypeValueObject(command.type)
-        const flavour = new FlavourValueObject(command.flavour)
-        const price = new PriceValueObject(command.price)
-        const stock = new StockValueObject(command.stock)
-        const image = new ImageValueObject(command.image)
+    createValueObject(command: Command): PosterDomainEntity {
+        const posterId = new IdValueObject(command?.posterId)//command?.posterId
+        const type = command?.type //new PosterTypeValueObject(command.type)
+        const flavour =command?.flavour //new FlavourValueObject(command.flavour)
+        const price = command?.price //new PriceValueObject(command.price)
+        const stock = command?.stock //new StockValueObject(command.stock)
+        const image = command?.image //new ImageValueObject(command.image)
 
         return {
             posterId,
@@ -77,6 +76,8 @@ export class CreatePosterUseCase<
             image
         } = valueObject
 
+        console.log("valueob:" + JSON.stringify(valueObject));
+
         if (posterId instanceof IdValueObject && posterId.hasErrors())
             this.setErrors(posterId.getErrors())
         if (type instanceof PosterTypeValueObject && type.hasErrors())
@@ -87,10 +88,13 @@ export class CreatePosterUseCase<
             this.setErrors(price.getErrors())
         if (stock instanceof StockValueObject && stock.hasErrors())
             this.setErrors(stock.getErrors())
-        if (image instanceof DateValueObject && image.hasErrors())
+        if (image instanceof ImageValueObject && image.hasErrors())
             this.setErrors(image.getErrors())
 
-        if (this.hasErrors() === true)
+
+        console.log("valueob:" + JSON.stringify(valueObject));
+
+        if (this.hasErrors())
             throw new ValueObjectException(
                 'Hay errres en validateValueObject',
                 this.getErrors()
@@ -101,15 +105,19 @@ export class CreatePosterUseCase<
         valueObject: IPosterDomainEntity
     ): PosterDomainEntity {
         const {
+            posterId,
             type,
             flavour,
             price,
+            stock,
             image
         } = valueObject
         return new PosterDomainEntity({
+            posterId: posterId.valueOf(),
             type: type,
             flavour: flavour,
             price: price.valueOf(),
+            stock: stock,
             image: image
         })
     }

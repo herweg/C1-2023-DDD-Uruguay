@@ -1,8 +1,8 @@
+import { ClientMySqlEntity } from '../../infrastructure/persistence/databases/mysql/entities/client.entity';
 import { IProductDomainEntity, ITicketDomainEntity } from '../entities';
-import { ProductDomainEntity } from '../entities/product/product.domain-entity';
 
-export interface ClientDomainService {
-    askRefound(ticket: ITicketDomainEntity): Promise<boolean>
-    buy(ticket: ITicketDomainEntity): Promise<ProductDomainEntity>
-    consultStock(product: IProductDomainEntity): Promise<number>
+export interface IClientDomainService<T extends ClientMySqlEntity = ClientMySqlEntity> {
+    askRefound(ticket: ITicketDomainEntity): Promise<T>
+    buy(ticket: ITicketDomainEntity): Promise<T>
+    consultStock(product: IProductDomainEntity): Promise<T>
 }

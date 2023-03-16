@@ -7,7 +7,6 @@ import { GettedPosterPublisher } from "../messaging/publisher/counter/getted-pos
 import { GettedProductPublisher } from "../messaging/publisher/counter/getted-product.message-publisher";
 import { CounterService, PosterService, ProductService } from "../persistence/services";
 import { CounterCreateCounterCommand } from "../utils/commands/counter/create-counter.command";
-import { CounterCreatePosterCommand } from "../utils/commands/counter/create-poster.command";
 import { CounterCreateProductCommand } from "../utils/commands/counter/create-product.command";
 import { GetPosterCommand } from "../utils/commands/counter/get-poster.command";
 import { GetProductCommand } from "../utils/commands/counter/get-product.command";
@@ -21,7 +20,6 @@ export class CounterController {
         private readonly productService: ProductService,
 
         private readonly createdCounterPublisher: CreatedCounterPublisher,
-        private readonly createdProductPublisher: CreatedProductPublisher,
         private readonly createdPosterPublisher: CreatedPosterPublisher,
         private readonly gettedPosterEventPublisher: GettedPosterPublisher,
         private readonly gettedProductEventPublisher: GettedProductPublisher
@@ -36,26 +34,9 @@ export class CounterController {
         return await useCase.execute(command)
     }
 
-    @Post("/create-product")
-    async addProduct(@Body() command: CounterCreateProductCommand) {
-        const useCase = new CreateProductUseCase(
-            this.productService,
-            this.createdProductPublisher
-        )
-        return await useCase.execute(command)
-    }
-
-    @Post("/create-poster")
-    async addPoster(@Body() command: CounterCreatePosterCommand) {
-        const useCase = new CreatePosterUseCase(
-            this.posterService,
-            this.createdPosterPublisher
-        )
-        return await useCase.execute(command)
-    }
-
     @Get("/get-poster")
     async getPoster(@Body() command: GetPosterCommand) {
+        
         const useCase = new GetPosterUseCase(
             this.posterService,
             this.gettedPosterEventPublisher

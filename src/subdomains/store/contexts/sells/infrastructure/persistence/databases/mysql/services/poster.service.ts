@@ -24,5 +24,4 @@ export class PosterMySqlService
         const posterToUpdate = await this.posterRepository.findById(poster.posterId)
         return this.posterRepository.update(poster.posterId, posterToUpdate)
     }
-
 }

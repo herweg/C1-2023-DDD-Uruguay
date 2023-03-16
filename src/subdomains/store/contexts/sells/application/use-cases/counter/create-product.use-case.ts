@@ -1,5 +1,5 @@
 import { IUseCase, ValueObjectErrorHandler, ValueObjectException } from "src/libs";
-import { CounterAggregate, CounterCreatedProductEventPublisherBase, DateValueObject, FlavourValueObject, ICounterCreateProductCommand, ICounterProductCreatedResponse, IdValueObject, IProductDomainEntity, IProductDomainService, PriceValueObject, ProductDomainEntity, ProductTypeValueObject, StockValueObject } from "../../../domain";
+import { CounterAggregate, CounterCreatedProductEventPublisherBase, DateValueObject, FlavourValueObject, ICounterCreateProductCommand, ICounterDomainService, ICounterProductCreatedResponse, IdValueObject, IProductDomainEntity, IProductDomainService, PriceValueObject, ProductDomainEntity, ProductTypeValueObject, StockValueObject } from "../../../domain";
 
 export class CreateProductUseCase<
     Command extends ICounterCreateProductCommand = ICounterCreateProductCommand,
@@ -12,12 +12,12 @@ export class CreateProductUseCase<
     private readonly counterAggregateRoot: CounterAggregate
 
     constructor(
-        private readonly productService: IProductDomainService,
+        private readonly counterService: ICounterDomainService,
         private readonly counterCreatedProductEventPublisherBase: CounterCreatedProductEventPublisherBase
     ) {
         super();
         this.counterAggregateRoot = new CounterAggregate({
-            productService,
+            counterService,
             counterCreatedProductEventPublisherBase
         })
     }
@@ -36,11 +36,11 @@ export class CreateProductUseCase<
 
     createValueObject(command: Command): IProductDomainEntity {
         const productId = new IdValueObject(command.productId)
-        const type = new ProductTypeValueObject(command.type)
-        const flavour = new FlavourValueObject(command.flavour)
-        const price = new PriceValueObject(command.price)
-        const stock = new StockValueObject(command.stock)
-        const expirationDate = new DateValueObject(command.expirationDate)
+        const type = command.type// new ProductTypeValueObject(command.type)
+        const flavour = command.flavour// new FlavourValueObject(command.flavour)
+        const price = command.price//new PriceValueObject(command.price)
+        const stock = command.stock//new StockValueObject(command.stock)
+        const expirationDate = command.expirationDate//new DateValueObject(command.expirationDate)
 
         return {
             productId,
