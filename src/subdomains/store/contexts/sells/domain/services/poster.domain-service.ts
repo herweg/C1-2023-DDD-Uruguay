@@ -1,9 +1,9 @@
-import { IPosterUpdateImageCommand, IPosterUpdatePriceCommand } from "../interfaces"
-import { IPosterUpdateTypeCommand } from "../interfaces/commands/counter/poster/update-type.command"
-import { PosterMySqlEntity } from '../../infrastructure/persistence/databases/mysql/entities/poster.entity';
+import { PosterDomainEntity } from "../entities/poster/poster.domain-entity";
 
-export interface IPosterDomainService<T extends PosterMySqlEntity = PosterMySqlEntity> {
-    updateImage(poster: IPosterUpdateImageCommand): Promise<T>
-    updatePosterPrice(poster: IPosterUpdatePriceCommand): Promise<T>
-    updatePosterType(poster: IPosterUpdateTypeCommand): Promise<T>
+export interface IPosterDomainService<T extends PosterDomainEntity = PosterDomainEntity> {
+    createPoster(poster: T): Promise<T>
+    updateImage(poster: T): Promise<T>
+    updatePosterPrice(poster: T): Promise<T>
+    updatePosterType(poster: T): Promise<T>
+    getPoster(posterId: string): Promise<T>
 }

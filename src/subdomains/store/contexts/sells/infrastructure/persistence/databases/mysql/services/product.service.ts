@@ -1,9 +1,10 @@
 import { Injectable } from "@nestjs/common";
-import { IProductDomainService, IProductUpdatePriceCommand, IProductUpdateStockCommand } from "src/subdomains/store/contexts/sells/domain";
+import { ICounterCreateProductCommand, IProductDomainService, IProductUpdatePriceCommand, IProductUpdateStockCommand } from "src/subdomains/store/contexts/sells/domain";
 import { IProductUpdateExpirationCommand } from "src/subdomains/store/contexts/sells/domain/interfaces/commands/counter/product/update-expiration.command";
 import { IProductUpdateTypeCommand } from "src/subdomains/store/contexts/sells/domain/interfaces/commands/counter/product/update-type.command";
 import { ProductMySqlEntity } from "../entities/product.entity";
 import { ProductRepository } from '../repositories/product.repository';
+import { ProductEntity } from '../../../entities/product.entity';
 
 @Injectable()
 export class ProductMySqlService
@@ -12,33 +13,29 @@ export class ProductMySqlService
     constructor(
         private readonly productRepository: ProductRepository,
     ) { }
-    async updateStock(product: IProductUpdateStockCommand): Promise<ProductMySqlEntity> {
-        const productToUpdate = await this.productRepository.findById(product.productId)
-        return this.productRepository.update(product.productId, productToUpdate)
+
+    async createProduct(product: ICounterCreateProductCommand): Promise<ProductMySqlEntity> {
+        const newProduct = this.productRepository.create(product)
+        return newProduct
     }
-    async updateProductPrice(product: IProductUpdatePriceCommand): Promise<ProductMySqlEntity> {
-        const productToUpdate = await this.productRepository.findById(product.productId)
-        return this.productRepository.update(product.productId, productToUpdate)
+
+    async updateStock(product: ProductMySqlEntity): Promise<ProductMySqlEntity> {
+        return this.productRepository.update(product.productId, product)
     }
-    async updateProductType(product: IProductUpdateTypeCommand): Promise<ProductMySqlEntity> {
-        const productToUpdate = await this.productRepository.findById(product.productId)
-        return this.productRepository.update(product.productId, productToUpdate)
+
+    async updateProductPrice(product: ProductMySqlEntity): Promise<ProductMySqlEntity> {
+        return this.productRepository.update(product.productId, product)
     }
-    async updateProductExpiration(product: IProductUpdateExpirationCommand): Promise<ProductMySqlEntity> {
-        const productToUpdate = await this.productRepository.findById(product.productId)
-        return this.productRepository.update(product.productId, productToUpdate)
+
+    async updateProductType(product: ProductMySqlEntity): Promise<ProductMySqlEntity> {
+        return this.productRepository.update(product.productId, product)
+    }
+
+    async updateProductExpiration(product: ProductMySqlEntity): Promise<ProductMySqlEntity> {
+        return this.productRepository.update(product.productId, product)
     }
 
     getProduct(productId: string): Promise<ProductMySqlEntity> {
         return this.productRepository.findById(productId)
-    }
-    registerProduct(product: ProductMySqlEntity): Promise<ProductMySqlEntity> {
-        return this.productRepository.create(product);
-    }
-    updateProductName(productId: string, entity: ProductMySqlEntity): Promise<ProductMySqlEntity> {
-        return this.productRepository.update(productId, entity)
-    }
-    updateProductPhone(productId: string, entity: ProductMySqlEntity): Promise<ProductMySqlEntity> {
-        return this.productRepository.update(productId, entity)
     }
 }

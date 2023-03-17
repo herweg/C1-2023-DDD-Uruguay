@@ -5,10 +5,6 @@ import { ProductMySqlEntity } from '../../infrastructure/persistence/databases/m
 
 export interface ICounterDomainService<T extends CounterMySqlEntity = CounterMySqlEntity> {
     createCounter(counter: ICounterCreateCounterCommand): Promise<T>
-    createPoster(poster: ICounterCreatePosterCommand): Promise<PosterMySqlEntity>
-    createProduct(poster: ICounterCreateProductCommand): Promise<ProductMySqlEntity>
     turnOffFreezer(counterId: string, turnOff: boolean): Promise<boolean>
     turnOnFreezer(counterId: string, turnOff: boolean): Promise<boolean>
-    getPoster(posterId: string): Promise<PosterMySqlEntity>
-    getProduct(productId: string): Promise<ProductMySqlEntity>
 }

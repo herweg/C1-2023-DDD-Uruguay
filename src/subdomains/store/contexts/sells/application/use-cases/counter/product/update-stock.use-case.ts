@@ -67,8 +67,8 @@ export class UpdateStockProductUseCase<
             stock
         } = valueObject
         return new ProductDomainEntity({
-            productId: productId,
-            stock: stock
+            productId: productId.valueOf(),
+            stock: stock.valueOf()
         })
     }
 

@@ -69,15 +69,16 @@ export class UpdateTypePosterUseCase<
             posterId,
             type
         } = valueObject
+        if (type instanceof PosterTypeValueObject)
         return new PosterDomainEntity({
-            posterId: posterId,
-            type: type
+            posterId: posterId.valueOf(),
+            type: type.value
         })
     }
 
     private executePosterUpdatedAggregateRoot(
         entity: PosterDomainEntity,
     ): Promise<PosterDomainEntity | null> {
-        return this.counterAggregateRoot.updatePosterType(entity as unknown as Command)
+        return this.counterAggregateRoot.updatePosterType(entity)
     }
 }

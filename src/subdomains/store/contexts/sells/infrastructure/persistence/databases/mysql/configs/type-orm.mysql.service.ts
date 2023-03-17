@@ -9,10 +9,10 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
     constructor(private readonly configService: ConfigService) { }
     
     async createTypeOrmOptions(connectionName?: string): Promise<TypeOrmModuleOptions> {
-        //const dbHost = this.configService.get<string>('DB_HOST')
-        //const dbPort = this.configService.get<number>('DB_PORT')
-        //const dbUser = this.configService.get<string>('DB_USER')
-        //const dbName = this.configService.get<string>('DB_NAME')
+        const dbHost = this.configService.get<string>('DB_HOST')
+        const dbPort = this.configService.get<number>('DB_PORT')
+        const dbUser = this.configService.get<string>('DB_USER')
+        const dbName = this.configService.get<string>('DB_NAME')
 
         // DB_HOST = localhost
         // DB_PORT = 3306
@@ -24,11 +24,11 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
 
         return {
             type: 'mysql',
-            host: "localhost",
-            port: 3306,
-            username: "root",
+            host: dbHost,
+            port: dbPort,
+            username: dbUser,
             password: "1234",
-            database: "icecream_db",
+            database: dbName,
             entities: [
                 PosterMySqlEntity,
                 ProductMySqlEntity,

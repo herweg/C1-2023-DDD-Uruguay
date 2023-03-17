@@ -1,9 +1,6 @@
-import { TicketMySqlEntity } from "../../infrastructure/persistence/databases/mysql/entities/ticket.entity"
-import { ITicketCreateTicketCommand } from "../interfaces/commands/ticket/create-ticket.command"
+import { TicketDomainEntity } from "../entities/ticket/ticket.domain-entity.ts"
 
-export interface ITicketDomainService<T extends TicketMySqlEntity = TicketMySqlEntity> {
-    createTicket(counter: ITicketCreateTicketCommand): Promise<T>
-    createSeller(poster: ITicketCreateTicketCommand): Promise<T>
-    createClient(poster: ITicketCreateTicketCommand): Promise<T>
-    makeRefound(posterId: string): Promise<T>
+export interface ITicketDomainService<T extends TicketDomainEntity = TicketDomainEntity> {
+    createTicket(ticket: T): Promise<T>
+    makeRefound(ticket: string): Promise<T>
 }

@@ -1,5 +1,6 @@
 import { BadRequestException, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
+import { Flavour } from 'src/subdomains/store/contexts/sells/domain/value-objects/common/flavour/flavour.value-object'
 import { Repository } from 'typeorm'
 import { ProductMySqlEntity } from '../entities/product.entity'
 
@@ -26,8 +27,6 @@ export class ProductRepository
     }
 
     async create(entity: ProductMySqlEntity): Promise<ProductMySqlEntity> {
-        //const productEntity = await this.repository.findOneBy({ productId: entity.productId })
-        //if (productEntity) throw new BadRequestException(`create Product with id: ${entity.productId} alredy exists`)
         return await this.repository.save(entity)
     }
 

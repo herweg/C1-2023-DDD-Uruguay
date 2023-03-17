@@ -1,22 +1,18 @@
-import { CounterDomainEntity, PosterDomainEntity, ProductDomainEntity } from "../entities";
+import { PosterDomainEntity, ProductDomainEntity } from "../entities";
 import { CounterCreatedCounterEventPublisherBase, CounterCreatedPosterEventPublisherBase, CounterCreatedProductEventPublisherBase, CounterTurnedOffFreezerEventPublisherBase, PosterUpdatedPriceEventPublisherBase } from "../events";
-import { ICounterCreateCounterCommand, ICounterCreatePosterCommand, ICounterCreateProductCommand, IPosterUpdateImageCommand, IProductUpdatePriceCommand, IProductUpdateStockCommand } from "../interfaces";
+import { ICounterCreateCounterCommand, IProductUpdateStockCommand } from "../interfaces";
 import { ICounterDomainService, IPosterDomainService, IProductDomainService } from "../services";
 import { AggregateRootException } from '../../../../../../libs/sofka/exceptions/aggregate-root.exception';
-import { IPosterUpdatePriceCommand } from '../interfaces/commands/counter/poster/update-price.command';
 import { PosterUpdatedImageEventPublisherBase } from '../events/publishers/counter/poster/updated-image.event-publisher';
 import { ProductUpdatedPriceEventPublisherBase } from '../events/publishers/counter/product/updated-price.event-publisher';
 import { ProductUpdatedStockEventPublisherBase } from '../events/publishers/counter/product/updated-stock.event-publisher';
 import { CounterTurnedOnFreezerEventPublisherBase } from '../events/publishers/counter/turednon-freezer.event-publisher';
 import { GettedProductEventPublisherBase } from "../events/publishers/counter/getted-product.event-publisher";
 import { GettedPosterEventPublisherBase } from "../events/publishers/counter/getted-poster.event-publisher";
-import { IPosterUpdateTypeCommand } from "../interfaces/commands/counter/poster/update-type.command";
-import { IProductUpdateTypeCommand } from "../interfaces/commands/counter/product/update-type.command";
 import { ProductUpdatedExpirationEventPublisherBase } from "../events/publishers/counter/product/updated-expiration.event-publisher";
 import { PosterUpdatedTypeEventPublisherBase } from "../events/publishers/counter/poster/updated-type.event-publisher";
 import { ProductUpdatedTypeEventPublisherBase } from "../events/publishers/counter/product/updated-type.event-publisher";
-import { IProductUpdateExpirationCommand } from "../interfaces/commands/counter/product/update-expiration.command";
-import { CounterMySqlEntity, PosterMySqlEntity, ProductMySqlEntity } from "../../infrastructure";
+import { CounterMySqlEntity } from "../../infrastructure";
 
 export class CounterAggregate implements
     ICounterDomainService,
@@ -108,6 +104,8 @@ export class CounterAggregate implements
         }
     ) {
         this.counterService = counterService,
+        this.posterService = posterService,
+        this.productService = productService,
             this.counterCreatedCounterEventPublisherBase = counterCreatedCounterEventPublisherBase,
             this.counterCreatedPosterEventPublisherBase = counterCreatedPosterEventPublisherBase,
             this.counterCreatedProductEventPublisherBase = counterCreatedProductEventPublisherBase,
@@ -149,26 +147,22 @@ export class CounterAggregate implements
         return counterResult
     }
 
-    async createPoster(poster: ICounterCreatePosterCommand): Promise<PosterMySqlEntity> {
-        console.log(this.counterService);
-        
-        if (!this.counterService) throw new AggregateRootException("createPoster Service not found.")
+    async createPoster(poster: PosterDomainEntity): Promise<PosterDomainEntity> {        
+        if (!this.posterService) throw new AggregateRootException("posterService not found.")
         if (!this.counterCreatedPosterEventPublisherBase) throw new AggregateRootException("Event not found.")
 
-        const posterResult = await this.counterService.createPoster(poster)
-        this.counterCreatedPosterEventPublisherBase.response = posterResult
+        this.counterCreatedPosterEventPublisherBase.response = poster
         this.counterCreatedPosterEventPublisherBase.publish()
-        return posterResult
+        return poster
     }
 
-    async createProduct(product: ICounterCreateProductCommand): Promise<ProductMySqlEntity> {
-        if (!this.counterService) throw new AggregateRootException("createProduct Service not found")
+    async createProduct(product: ProductDomainEntity): Promise<ProductDomainEntity> {
+        if (!this.productService) throw new AggregateRootException("productService not found")
         if (!this.counterCreatedProductEventPublisherBase) throw new AggregateRootException("Create product event not found")
 
-        const productCreated = await this.counterService.createProduct(product)
-        this.counterCreatedProductEventPublisherBase.response = productCreated
+        this.counterCreatedProductEventPublisherBase.response = product
         this.counterCreatedProductEventPublisherBase.publish()
-        return productCreated
+        return product
     }
 
     async turnOffFreezer(counterId: string, turnOff: boolean): Promise<boolean> {
@@ -192,21 +186,21 @@ export class CounterAggregate implements
     }
 
     //getters
-    async getPoster(posterId: string): Promise<PosterMySqlEntity> {
+    async getPoster(posterId: string): Promise<PosterDomainEntity> {
         if (!this.posterService) throw new AggregateRootException("getPoster CounterService not found")
         if (!this.gettedPosterEventPublisherBase) throw new AggregateRootException("getPoster event not found")
 
-        const poster = await this.counterService.getPoster(posterId)
+        const poster = await this.posterService.getPoster(posterId)
         this.gettedPosterEventPublisherBase.response = poster
         this.gettedPosterEventPublisherBase.publish()
         return poster
     }
 
-    async getProduct(productId: string): Promise<ProductMySqlEntity> {
+    async getProduct(productId: string): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("getProduct CounterService not found")
         if (!this.gettedProductEventPublisherBase) throw new AggregateRootException("getProduct event not found")
 
-        const product = await this.counterService.getProduct(productId)
+        const product = await this.productService.getProduct(productId)
         this.gettedProductEventPublisherBase.response = product
         this.gettedProductEventPublisherBase.publish()
         return product
@@ -220,44 +214,40 @@ export class CounterAggregate implements
      * @return {*}  {ProductMySqlEntity}
      * @memberof CounterAggregate
      */
-    async updateStock(product: IProductUpdateStockCommand): Promise<ProductMySqlEntity> {
+    async updateStock(product: IProductUpdateStockCommand): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("updateStock service not found")
         if (!this.productUpdatedStockEventPublisherBase) throw new AggregateRootException("PRODUCT Update stock event not found")
 
-        const stockResult = await this.productService.updateStock(product)
-        this.productUpdatedStockEventPublisherBase.response = stockResult
+        this.productUpdatedStockEventPublisherBase.response = product
         this.productUpdatedStockEventPublisherBase.publish()
-        return stockResult
+        return product
     }
     
-    async updateProductPrice(product: IProductUpdatePriceCommand): Promise<ProductMySqlEntity> {
+    async updateProductPrice(product: ProductDomainEntity): Promise<ProductDomainEntity> {        
         if (!this.productService) throw new AggregateRootException("updateProductPrice service not found")
         if (!this.productUpdatedPriceEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
-        const priceResult = await this.productService.updateProductPrice(product)
-        this.productUpdatedPriceEventPublisherBase.response = priceResult
+        this.productUpdatedPriceEventPublisherBase.response = product
         this.productUpdatedPriceEventPublisherBase.publish()
-        return priceResult
+        return product
     }
 
-    async updateProductType(product: IProductUpdateTypeCommand): Promise<ProductMySqlEntity> {
+    async updateProductType(product: ProductDomainEntity): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("updateProductType service not found")
         if (!this.productUpdatedTypeEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
-        const typeResult = await this.productService.updateProductType(product)
-        this.productUpdatedTypeEventPublisherBase.response = typeResult
+        this.productUpdatedTypeEventPublisherBase.response = product
         this.productUpdatedTypeEventPublisherBase.publish()
-        return typeResult
+        return product
     }
 
-    async updateProductExpiration(product: IProductUpdateExpirationCommand): Promise<ProductMySqlEntity> {
+    async updateProductExpiration(product: ProductDomainEntity): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("updateProductExpiration service not found")
         if (!this.productUpdatedExpirationEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
-        const expirationResult = await this.productService.updateProductExpiration(product)
-        this.productUpdatedExpirationEventPublisherBase.response = expirationResult
+        this.productUpdatedExpirationEventPublisherBase.response = product
         this.productUpdatedExpirationEventPublisherBase.publish()
-        return expirationResult
+        return product
     }
 
     /**
@@ -265,10 +255,10 @@ export class CounterAggregate implements
      *
      * @param {IPosterDomainEntity} poster
      * @param {string} newImage
-     * @return {*}  {PosterMySqlEntity}
+     * @return {*}  {PosterDomainEntity}
      * @memberof CounterAggregate
      */
-    async updateImage(poster: IPosterUpdateImageCommand): Promise<PosterMySqlEntity> {
+    async updateImage(poster: PosterDomainEntity): Promise<PosterDomainEntity> {
         if (!this.posterService) throw new AggregateRootException("updateImage Service not found.")
         if (!this.posterUpdatedImageEventPublisherBase) throw new AggregateRootException("Event not found.")
 
@@ -278,7 +268,7 @@ export class CounterAggregate implements
         return imageResult
     }
 
-    async updatePosterPrice(poster: IPosterUpdatePriceCommand): Promise<PosterMySqlEntity> {
+    async updatePosterPrice(poster: PosterDomainEntity): Promise<PosterDomainEntity> {
         if (!this.posterService) throw new AggregateRootException("updatePosterPrice Service not found.")
         if (!this.posterUpdatedPriceEventPublisherBase) throw new AggregateRootException("Event not found.")
 
@@ -288,7 +278,7 @@ export class CounterAggregate implements
         return posterResult
     }
 
-    async updatePosterType(poster: IPosterUpdateTypeCommand): Promise<PosterMySqlEntity> {
+    async updatePosterType(poster: PosterDomainEntity): Promise<PosterDomainEntity> {
         if (!this.posterService) throw new AggregateRootException("updatePosterType service not found")
         if (!this.posterUpdatedTypeEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 

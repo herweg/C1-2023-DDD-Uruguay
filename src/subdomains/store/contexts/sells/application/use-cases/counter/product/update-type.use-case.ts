@@ -1,4 +1,4 @@
-import { IdValueObject, IProductDomainEntity, IProductDomainService, ProductTypeValueObject } from '../../../../domain';
+import { DessertType, IdValueObject, IProductDomainEntity, IProductDomainService, ProductTypeValueObject } from '../../../../domain';
 import { ValueObjectErrorHandler, ValueObjectException } from 'src/libs';
 import { IUseCase } from '../../../../../../../../libs/sofka/interface/use-case.interface';
 import { CounterAggregate } from '../../../../domain/aggregates/counter.aggregate';
@@ -72,15 +72,16 @@ export class UpdateTypeProductUseCase<
             productId,
             type
         } = valueObject
+        if (type instanceof ProductTypeValueObject)
         return new ProductDomainEntity({
-            productId: productId,
-            type: type
+            productId: productId.valueOf(),
+            type: type.value
         })
     }
 
     private executeProductUpdatedAggregateRoot(
         entity: ProductDomainEntity,
     ): Promise<ProductDomainEntity | null> {
-        return this.counterAggregateRoot.updateProductType(entity as unknown as Command)
+        return this.counterAggregateRoot.updateProductType(entity)
     }
 }

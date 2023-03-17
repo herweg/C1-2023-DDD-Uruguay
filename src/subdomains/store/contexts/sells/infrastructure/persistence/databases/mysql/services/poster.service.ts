@@ -1,5 +1,5 @@
-import { Injectable } from "@nestjs/common";
-import { IPosterDomainService, IPosterUpdateImageCommand, IPosterUpdatePriceCommand } from "src";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { ICounterCreatePosterCommand, IPosterDomainService, IPosterUpdateImageCommand, IPosterUpdatePriceCommand, PosterDomainEntity } from "src";
 import { IPosterUpdateTypeCommand } from "src/subdomains/store/contexts/sells/domain/interfaces/commands/counter/poster/update-type.command";
 import { PosterMySqlEntity } from "../entities/poster.entity";
 import { PosterRepository } from "../repositories/poster.repository";
@@ -12,16 +12,24 @@ export class PosterMySqlService
         private readonly posterRepository: PosterRepository,
     ) { }
 
-    async updateImage(poster: IPosterUpdateImageCommand): Promise<PosterMySqlEntity> {
-        const posterToUpdate = await this.posterRepository.findById(poster.posterId)
-        return this.posterRepository.update(poster.posterId, posterToUpdate)
+    async createPoster(poster: ICounterCreatePosterCommand): Promise<PosterMySqlEntity> {
+        const newPoster = await this.posterRepository.create(poster)
+        return newPoster
     }
-    async updatePosterPrice(poster: IPosterUpdatePriceCommand): Promise<PosterMySqlEntity> {
-        const posterToUpdate = await this.posterRepository.findById(poster.posterId)
-        return this.posterRepository.update(poster.posterId, posterToUpdate)
+
+    async updateImage(poster: PosterMySqlEntity): Promise<PosterMySqlEntity> {
+        return this.posterRepository.update(poster.posterId, poster)
     }
-    async updatePosterType(poster: IPosterUpdateTypeCommand): Promise<PosterMySqlEntity> {
-        const posterToUpdate = await this.posterRepository.findById(poster.posterId)
-        return this.posterRepository.update(poster.posterId, posterToUpdate)
+
+    async updatePosterPrice(poster: PosterMySqlEntity): Promise<PosterMySqlEntity> {
+        return this.posterRepository.update(poster.posterId.valueOf(), poster)
+    }
+
+    async updatePosterType(poster: PosterMySqlEntity): Promise<PosterMySqlEntity> {
+        return this.posterRepository.update(poster.posterId, poster)
+    }
+
+    async getPoster(posterId: string): Promise<PosterMySqlEntity> {
+        return this.posterRepository.findById(posterId)
     }
 }

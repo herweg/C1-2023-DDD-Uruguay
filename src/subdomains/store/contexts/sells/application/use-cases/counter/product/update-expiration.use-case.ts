@@ -41,7 +41,7 @@ export class UpdateExpirationProductUseCase<
 
     private createValueObject(command: Command): IProductDomainEntity {
         const productId = new IdValueObject(command.productId)
-        const expirationDate = new DateValueObject(command.expirationDate)
+        const expirationDate = new DateValueObject(new Date(command.expirationDate.valueOf()))
 
         return {
             productId,
@@ -73,14 +73,14 @@ export class UpdateExpirationProductUseCase<
             expirationDate
         } = valueObject
         return new ProductDomainEntity({
-            productId: productId,
-            expirationDate: expirationDate
+            productId: productId.valueOf(),
+            expirationDate: new Date(expirationDate.valueOf())
         })
     }
 
     private executeProductUpdatedAggregateRoot(
         entity: ProductDomainEntity,
     ): Promise<ProductDomainEntity | null> {
-        return this.counterAggregateRoot.updateProductExpiration(entity as unknown as Command)
+        return this.counterAggregateRoot.updateProductExpiration(entity)
     }
 }

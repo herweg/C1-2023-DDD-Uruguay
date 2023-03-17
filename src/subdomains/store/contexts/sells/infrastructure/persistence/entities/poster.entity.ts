@@ -1,3 +1,3 @@
-import { PosterMySqlService } from '../databases/mysql/services/poster.service';
+import { PosterMySqlEntity } from '../databases/mysql/entities/poster.entity';
 
-export class PosterEntity extends PosterMySqlService { }
+export class PosterEntity extends PosterMySqlEntity { }

@@ -67,14 +67,14 @@ export class UpdateImageUseCase<
             image
         } = valueObject
         return new PosterDomainEntity({
-            posterId: posterId,
-            image: image
+            posterId: posterId.valueOf(),
+            image: image.valueOf()
         })
     }
 
     private executePosterUpdatedAggregateRoot(
         entity: PosterDomainEntity,
     ): Promise<PosterDomainEntity | null> {
-        return this.counterAggregateRoot.updateImage(entity as unknown as Command)
+        return this.counterAggregateRoot.updateImage(entity)
     }
 }

@@ -12,12 +12,12 @@ export class CreateProductUseCase<
     private readonly counterAggregateRoot: CounterAggregate
 
     constructor(
-        private readonly counterService: ICounterDomainService,
+        private readonly productService: IProductDomainService,
         private readonly counterCreatedProductEventPublisherBase: CounterCreatedProductEventPublisherBase
     ) {
         super();
         this.counterAggregateRoot = new CounterAggregate({
-            counterService,
+            productService,
             counterCreatedProductEventPublisherBase
         })
     }
@@ -30,17 +30,17 @@ export class CreateProductUseCase<
     executeCommand(command: Command): Promise<ProductDomainEntity | null> {
         const valueObject = this.createValueObject(command)
         this.validateValueObject(valueObject)
-        const product = this.createEntityPrductDomain(valueObject)
+        const product = this.createEntityProductDomain(valueObject)
         return this.executeProductAggregateRoot(product)
     }
 
     createValueObject(command: Command): IProductDomainEntity {
         const productId = new IdValueObject(command.productId)
-        const type = command.type// new ProductTypeValueObject(command.type)
-        const flavour = command.flavour// new FlavourValueObject(command.flavour)
-        const price = command.price//new PriceValueObject(command.price)
-        const stock = command.stock//new StockValueObject(command.stock)
-        const expirationDate = command.expirationDate//new DateValueObject(command.expirationDate)
+        const type = command?.type// new ProductTypeValueObject(command.type)
+        const flavour = command?.flavour// new FlavourValueObject(command.flavour)
+        const price = command?.price//new PriceValueObject(command.price)
+        const stock = command?.stock//new StockValueObject(command.stock)
+        const expirationDate = command?.expirationDate//new DateValueObject(command.expirationDate)
 
         return {
             productId,
@@ -82,7 +82,7 @@ export class CreateProductUseCase<
             )
     }
 
-    createEntityPrductDomain(
+    createEntityProductDomain(
         valueObject: IProductDomainEntity
     ): ProductDomainEntity {
         const {
@@ -92,6 +92,7 @@ export class CreateProductUseCase<
             stock,
             expirationDate
         } = valueObject
+        
         return new ProductDomainEntity({
             type: type,
             flavour: flavour,
@@ -104,6 +105,6 @@ export class CreateProductUseCase<
     private executeProductAggregateRoot(
         entity: ProductDomainEntity,
     ): Promise<ProductDomainEntity | null> {
-        return this.counterAggregateRoot.createProduct(entity as ICounterCreateProductCommand)
+        return this.counterAggregateRoot.createProduct(entity)
     }
 }

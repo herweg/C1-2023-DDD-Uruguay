@@ -4,11 +4,11 @@ import {
     CounterCreatedPosterEventPublisherBase,
     FlavourValueObject,
     ICounterCreatePosterCommand,
-    ICounterDomainService,
     ICounterPosterCreatedResponse,
     IdValueObject,
     ImageValueObject,
     IPosterDomainEntity,
+    IPosterDomainService,
     PosterDomainEntity,
     PosterTypeValueObject,
     PriceValueObject,
@@ -26,12 +26,12 @@ export class CreatePosterUseCase<
     private readonly counterAggregateRoot: CounterAggregate
 
     constructor(
-        private readonly counterService: ICounterDomainService,
+        private readonly posterService: IPosterDomainService,
         private readonly counterCreatedPosterEventPublisherBase: CounterCreatedPosterEventPublisherBase
     ) {
         super();
         this.counterAggregateRoot = new CounterAggregate({
-            counterService,
+            posterService,
             counterCreatedPosterEventPublisherBase
         })
     }
@@ -76,8 +76,6 @@ export class CreatePosterUseCase<
             image
         } = valueObject
 
-        console.log("valueob:" + JSON.stringify(valueObject));
-
         if (posterId instanceof IdValueObject && posterId.hasErrors())
             this.setErrors(posterId.getErrors())
         if (type instanceof PosterTypeValueObject && type.hasErrors())
@@ -90,7 +88,6 @@ export class CreatePosterUseCase<
             this.setErrors(stock.getErrors())
         if (image instanceof ImageValueObject && image.hasErrors())
             this.setErrors(image.getErrors())
-
 
         console.log("valueob:" + JSON.stringify(valueObject));
 
@@ -105,19 +102,23 @@ export class CreatePosterUseCase<
         valueObject: IPosterDomainEntity
     ): PosterDomainEntity {
         const {
-            posterId,
+            //posterId,
             type,
             flavour,
             price,
             stock,
             image
         } = valueObject
+
+        console.log("valueObjectTT"+valueObject);
+        
+        if (type instanceof PosterTypeValueObject && flavour instanceof FlavourValueObject)
         return new PosterDomainEntity({
-            posterId: posterId.valueOf(),
+            //posterId: posterId.valueOf(),
             type: type,
             flavour: flavour,
             price: price.valueOf(),
-            stock: stock,
+            stock: stock.valueOf(),
             image: image
         })
     }
@@ -125,6 +126,6 @@ export class CreatePosterUseCase<
     private executePosterAggregateRoot(
         entity: PosterDomainEntity,
     ): Promise<PosterDomainEntity | null> {
-        return this.counterAggregateRoot.createPoster(entity as ICounterCreatePosterCommand)
+        return this.counterAggregateRoot.createPoster(entity)
     }
 }

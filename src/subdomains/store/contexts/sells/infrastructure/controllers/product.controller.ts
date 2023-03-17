@@ -29,7 +29,7 @@ export class ProductController {
     @Post("/create-product")
     async addProduct(@Body() command: CounterCreateProductCommand) {
         const useCase = new CreateProductUseCase(
-            this.counterService,
+            this.productService,
             this.createdProductPublisher
         )
         return await useCase.execute(command)

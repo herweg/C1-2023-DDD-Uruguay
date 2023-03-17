@@ -11,25 +11,25 @@ export class EventRepository
   constructor(
     @InjectRepository(EventEntity)
     private readonly eventRepository: Repository<EventEntity>,
-  ) {}
+  ) { }
 
   async findAll(): Promise<EventEntity[]> {
-      return await this.eventRepository.find();
-    }
+    return await this.eventRepository.find();
+  }
 
-    async create(
-        entity: EventEntity,
-        ): Promise<EventEntity> {
-            return await this.eventRepository.save(entity);
-        }
+  async create(
+    entity: EventEntity,
+  ): Promise<EventEntity> {
+    return await this.eventRepository.save(entity);
+  }
 
-        findById(id: string): Promise<EventEntity> {
-            throw new Error('Method not implemented.');
-        }
-        update(id: string, entity: EventEntity): Promise<EventEntity> {
-            throw new Error('Method not implemented.');
-        }
-        delete(id: string): Promise<boolean> {
-            throw new Error('Method not implemented.');
-        }
+  findById(id: string): Promise<EventEntity> {
+    throw new Error('Method not implemented.');
+  }
+  update(id: string, entity: EventEntity): Promise<EventEntity> {
+    throw new Error('Method not implemented.');
+  }
+  delete(id: string): Promise<boolean> {
+    throw new Error('Method not implemented.');
+  }
 }

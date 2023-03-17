@@ -1,9 +1,6 @@
-import { SellerMySqlEntity } from "../../infrastructure/persistence/databases/mysql/entities/seller.entity"
-import { IProductDomainEntity } from "../entities/interfaces/product.domain-entity.interface"
-import { ITicketDomainEntity } from "../entities/interfaces/ticket.domain-entity.interface"
+import { SellerDomainEntity } from "../entities"
 
-export interface ISellerDomainService<T extends SellerMySqlEntity = SellerMySqlEntity> {
-    refound(ticket: ITicketDomainEntity): Promise<T>
-    sell(ticket: ITicketDomainEntity): Promise<T>
-    consultStock(product: IProductDomainEntity): Promise<T>
+export interface ISellerDomainService<T extends SellerDomainEntity = SellerDomainEntity> {
+    createSeller(seller: T): Promise<T>
+    updateSalary(seller: T): Promise<T>
 }

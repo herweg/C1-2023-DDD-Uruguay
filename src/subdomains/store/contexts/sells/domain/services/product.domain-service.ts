@@ -1,12 +1,10 @@
 import { ProductDomainEntity } from "../entities"
-import { IProductUpdatePriceCommand, IProductUpdateStockCommand } from "../interfaces"
-import { IProductUpdateExpirationCommand } from "../interfaces/commands/counter/product/update-expiration.command"
-import { IProductUpdateTypeCommand } from "../interfaces/commands/counter/product/update-type.command"
-import { ProductMySqlEntity } from '../../infrastructure/persistence/databases/mysql/entities/product.entity';
 
-export interface IProductDomainService<T extends ProductMySqlEntity = ProductMySqlEntity> {
-    updateStock(product: IProductUpdateStockCommand): Promise<T>
-    updateProductPrice(product: IProductUpdatePriceCommand): Promise<T>
-    updateProductType(product: IProductUpdateTypeCommand): Promise<T>
-    updateProductExpiration(product: IProductUpdateExpirationCommand): Promise<T>
+export interface IProductDomainService<T extends ProductDomainEntity = ProductDomainEntity> {
+    createProduct(product: T): Promise<T>
+    updateStock(product: T): Promise<T>
+    updateProductPrice(product: T): Promise<T>
+    updateProductType(product: T): Promise<T>
+    updateProductExpiration(product: T): Promise<T>
+    getProduct(productId: string): Promise<T>
 }

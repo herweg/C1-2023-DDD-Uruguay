@@ -19,6 +19,8 @@ import { UpdatedTypePublisher as ProductUpdatedTypePublisher } from "./publisher
 import { CounterController } from "./subscriber/counter.subscriber";
 import { PosterController } from "./subscriber/poster.subscriber";
 import { ProductController } from "./subscriber/product.subscriber";
+import { ProductService } from "../persistence/services";
+import { PersistanceModule } from "../persistence/persistance.module";
 
 /**
  * name: el nombre del cliente.
@@ -54,6 +56,7 @@ import { ProductController } from "./subscriber/product.subscriber";
                 },
             },
         ]),
+        PersistanceModule
     ],
     controllers: [
         CounterController,

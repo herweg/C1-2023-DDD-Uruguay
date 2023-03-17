@@ -72,14 +72,14 @@ export class UpdatePriceProductUseCase<
             price
         } = valueObject
         return new ProductDomainEntity({
-            productId: productId,
-            price: price
+            productId: productId.valueOf(),
+            price: price.valueOf()
         })
     }
 
     private executeProductUpdatedAggregateRoot(
         entity: ProductDomainEntity,
     ): Promise<ProductDomainEntity | null> {
-        return this.counterAggregateRoot.updateProductPrice(entity as unknown as Command)
+        return this.counterAggregateRoot.updateProductPrice(entity)
     }
 }

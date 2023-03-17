@@ -1,9 +1,11 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
+import { CounterEntity } from "../../persistence/entities";
+import { CounterService } from "../../persistence/services";
 
 @Controller()
 export class CounterController {
-
+    constructor(private readonly counterService: CounterService) { }
     /**
      * EventPattern se utiliza para definir un patrón de evento de Kafka
      * al que el controlador responderá.
@@ -29,26 +31,8 @@ export class CounterController {
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-    }
-
-    @EventPattern('store.product-created')
-    productCreated(@Payload() data: any, @Ctx() context: KafkaContext) {
-
-        console.log('--------------------------------------')
-        console.log('Data: ', data)
-        console.log('--------------------------------------')
-        console.log('Context: ', context)
-        console.log('--------------------------------------')
-    }
-
-    @EventPattern('store.poster-created')
-    posterCreated(@Payload() data: any, @Ctx() context: KafkaContext) {
-
-        console.log('--------------------------------------')
-        console.log('Data: ', data)
-        console.log('--------------------------------------')
-        console.log('Context: ', context)
-        console.log('--------------------------------------')
+        //const counter: CounterEntity = JSON.parse(JSON.stringify(data.data))
+        //this.counterService.createCounter(counter)
     }
 
     @EventPattern('store.getted-poster')

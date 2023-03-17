@@ -67,14 +67,14 @@ export class UpdatePricePosterUseCase<
             price
         } = valueObject
         return new PosterDomainEntity({
-            posterId: posterId,
-            price: price
+            posterId: posterId.valueOf(),
+            price: price.valueOf()
         })
     }
 
     private executePosterUpdatedAggregateRoot(
         entity: PosterDomainEntity,
     ): Promise<PosterDomainEntity | null> {
-        return this.counterAggregateRoot.updatePosterPrice(entity as unknown as Command)
+        return this.counterAggregateRoot.updatePosterPrice(entity)
     }
 }
