@@ -7,6 +7,7 @@ import { PosterEventController } from './messaging/subscriber/poster.subscriber'
 import { CounterEventController } from './messaging/subscriber/counter.subscriber';
 import { ProductEventController } from './messaging/subscriber/product.subscriber';
 import { PersistanceModule } from './persistence/persistance.module';
+import { ClientController } from './controllers/client.controller';
 
 @Module({
     imports: [PersistanceModule, MessagingModule],
@@ -14,10 +15,11 @@ import { PersistanceModule } from './persistence/persistance.module';
         CounterController,
         PosterController,
         ProductController,
+        ClientController,
 
         CounterEventController,
         PosterEventController,
-        ProductEventController
+        ProductEventController,
     ],
     providers: [],
     exports: []

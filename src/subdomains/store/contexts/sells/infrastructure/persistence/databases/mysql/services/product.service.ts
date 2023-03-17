@@ -1,10 +1,7 @@
-import { Injectable } from "@nestjs/common";
-import { ICounterCreateProductCommand, IProductDomainService, IProductUpdatePriceCommand, IProductUpdateStockCommand } from "src/subdomains/store/contexts/sells/domain";
-import { IProductUpdateExpirationCommand } from "src/subdomains/store/contexts/sells/domain/interfaces/commands/counter/product/update-expiration.command";
-import { IProductUpdateTypeCommand } from "src/subdomains/store/contexts/sells/domain/interfaces/commands/counter/product/update-type.command";
-import { ProductMySqlEntity } from "../entities/product.entity";
-import { ProductRepository } from '../repositories/product.repository';
-import { ProductEntity } from '../../../entities/product.entity';
+import { Injectable } from "@nestjs/common"
+import { ICounterCreateProductCommand, IProductDomainService } from "src/subdomains/store/contexts/sells/domain";
+import { ProductMySqlEntity } from "../entities/product.entity"
+import { ProductRepository } from '../repositories/product.repository'
 
 @Injectable()
 export class ProductMySqlService

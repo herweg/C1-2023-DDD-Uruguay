@@ -1,10 +1,11 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
-import { CounterService } from "../../persistence/services";
+import { EventInfraEntity } from "../../persistence/entities/event.entity";
+import { EventInfraService } from "../../persistence/services/event.service";
 
 @Controller()
 export class CounterEventController {
-    constructor(private readonly counterService: CounterService) { }
+    constructor(private readonly eventService: EventInfraService) { }
     /**
      * EventPattern se utiliza para definir un patrón de evento de Kafka
      * al que el controlador responderá.
@@ -30,8 +31,12 @@ export class CounterEventController {
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        //const counter: CounterEntity = JSON.parse(JSON.stringify(data.data))
-        //this.counterService.createCounter(counter)
+
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.counter-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.getted-poster')
@@ -42,6 +47,12 @@ export class CounterEventController {
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
+
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.getted-poster';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.getted-product')
@@ -52,5 +63,11 @@ export class CounterEventController {
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
+
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.getted-product';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 }

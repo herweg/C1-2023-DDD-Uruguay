@@ -8,10 +8,10 @@ export class NameValueObject extends ValueObjectBase<string>{
     }
 
     validateData(): void {
-        if (!this.hasErrors()) {
-            this.validateName()
-            this.validateEmpty()
-        }
+        // if (!this.hasErrors()) {
+        //     this.validateName()
+        //     this.validateEmpty()
+        // }
     }
 
     private validateName() {

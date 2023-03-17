@@ -9,6 +9,7 @@ import { ITicketDomainService } from "../services/ticket.domain-service";
 import { ClientCreatedClientEventPublisherBase } from "../events/publishers/ticket/client/created-client.event-publisher";
 import { SellerAddedSellerEventPublisherBase } from "../events/publishers/ticket/seller/added-seller.event-publisher";
 import { AggregateRootException } from "src/libs/sofka/exceptions/aggregate-root.exception";
+import { GettedClientEventPublisherBase } from "../events/publishers/ticket/client/getted-client.event-publisher";
 
 export class TicketAggregate implements
     ITicketDomainService,
@@ -28,6 +29,7 @@ export class TicketAggregate implements
     private readonly sellerSalaryUpdatedEventPublisherBase?: SellerSalaryUpdatedEventPublisherBase
     //Client
     private readonly clientCreatedClientEventPublisherBase?: ClientCreatedClientEventPublisherBase
+    private readonly gettedClientEventPublisherBase?: GettedClientEventPublisherBase
 
     constructor(
         {
@@ -42,7 +44,8 @@ export class TicketAggregate implements
             sellerAddedSellerEventPublisherBase,
             sellerSalaryUpdatedEventPublisherBase,
             //Client
-            clientCreatedClientEventPublisherBase
+            clientCreatedClientEventPublisherBase,
+            gettedClientEventPublisherBase
         }: {
             //Services
             ticketService?: ITicketDomainService
@@ -56,6 +59,7 @@ export class TicketAggregate implements
             sellerSalaryUpdatedEventPublisherBase?: SellerSalaryUpdatedEventPublisherBase
             //Client
             clientCreatedClientEventPublisherBase?: ClientCreatedClientEventPublisherBase
+            gettedClientEventPublisherBase?: GettedClientEventPublisherBase
         }
     ) {
         //Services
@@ -69,7 +73,8 @@ export class TicketAggregate implements
             this.sellerAddedSellerEventPublisherBase = sellerAddedSellerEventPublisherBase,
             this.sellerSalaryUpdatedEventPublisherBase = sellerSalaryUpdatedEventPublisherBase,
             //Client
-            this.clientCreatedClientEventPublisherBase = clientCreatedClientEventPublisherBase
+            this.clientCreatedClientEventPublisherBase = clientCreatedClientEventPublisherBase,
+            this.gettedClientEventPublisherBase = gettedClientEventPublisherBase
     }
 
     //Ticket
@@ -85,17 +90,22 @@ export class TicketAggregate implements
         if (!this.sellerService) throw new AggregateRootException("sellerService not found.")
         if (!this.sellerAddedSellerEventPublisherBase) throw new AggregateRootException("sellerService Event not found.")
 
-        this.sellerAddedSellerEventPublisherBase.response = seller
+        const salaryUpdated = await this.sellerService.createSeller(seller)
+
+        this.sellerAddedSellerEventPublisherBase.response = salaryUpdated
         this.sellerAddedSellerEventPublisherBase.publish()
-        return seller
+        return salaryUpdated
     }
+    
     async updateSalary(seller: SellerDomainEntity): Promise<SellerDomainEntity> {
         if (!this.sellerService) throw new AggregateRootException("updateSalary service not found")
         if (!this.sellerSalaryUpdatedEventPublisherBase) throw new AggregateRootException("updateSalary event not found")
 
-        this.sellerSalaryUpdatedEventPublisherBase.response = seller
+        const salaryUpdated = await this.sellerService.updateSalary(seller)
+
+        this.sellerSalaryUpdatedEventPublisherBase.response = salaryUpdated
         this.sellerSalaryUpdatedEventPublisherBase.publish()
-        return seller
+        return salaryUpdated
     }
 
     //Client
@@ -103,8 +113,21 @@ export class TicketAggregate implements
         if (!this.clientService) throw new AggregateRootException("createClient not found.")
         if (!this.clientCreatedClientEventPublisherBase) throw new AggregateRootException("createClient Event not found.")
 
-        this.clientCreatedClientEventPublisherBase.response = client
+        const clientResult = await this.clientService.createClient(client)
+
+        this.clientCreatedClientEventPublisherBase.response = clientResult
         this.clientCreatedClientEventPublisherBase.publish()
-        return client
+        return clientResult
+    }
+
+    async getClient(client: string): Promise<ClientDomainEntity> {
+        if (!this.clientService) throw new AggregateRootException("getPoster CounterService not found")
+        if (!this.gettedClientEventPublisherBase) throw new AggregateRootException("getPoster event not found")
+
+        const getClient = await this.clientService.getClient(client)
+
+        this.gettedClientEventPublisherBase.response = getClient
+        this.gettedClientEventPublisherBase.publish()
+        return getClient
     }
 }

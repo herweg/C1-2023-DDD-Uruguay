@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmMySqlConfigService } from './configs/type-orm.mysql.service';
 import {
+    ClientMySqlEntity,
     CounterMySqlEntity,
     EventEntity,
     PosterMySqlEntity,
@@ -12,12 +13,14 @@ import {
     PosterRepository,
     ProductRepository
 } from './repositories';
+import { ClientRepository } from './repositories/client.repository';
 import { EventRepository } from './repositories/event.repository';
 import {
     EventService,
     PosterMySqlService,
     ProductMySqlService
 } from './services';
+import { ClientMySqlService } from './services/client.service';
 import { CounterMySqlService } from './services/counter.service';
 
 
@@ -30,10 +33,11 @@ import { CounterMySqlService } from './services/counter.service';
 
         TypeOrmModule.forFeature([
             EventEntity,
-            
+
             PosterMySqlEntity,
             ProductMySqlEntity,
-            CounterMySqlEntity
+            CounterMySqlEntity,
+            ClientMySqlEntity
         ])
     ],
     providers: [
@@ -44,11 +48,13 @@ import { CounterMySqlService } from './services/counter.service';
         PosterMySqlService,
         ProductMySqlService,
         CounterMySqlService,
+        ClientMySqlService,
 
         EventRepository,
         ProductRepository,
         PosterRepository,
-        CounterRepository
+        CounterRepository,
+        ClientRepository
     ],
     exports: [
         EventService,
@@ -56,11 +62,13 @@ import { CounterMySqlService } from './services/counter.service';
         PosterMySqlService,
         ProductMySqlService,
         CounterMySqlService,
+        ClientMySqlService,
 
         EventRepository,
         ProductRepository,
         PosterRepository,
-        CounterRepository
+        CounterRepository,
+        ClientRepository
     ]
 })
 export class MySqlModule { }

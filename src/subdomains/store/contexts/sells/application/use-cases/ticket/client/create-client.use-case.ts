@@ -1,9 +1,8 @@
 import { IUseCase, ValueObjectErrorHandler, ValueObjectException } from "src/libs";
-import { ClientDomainEntity, IClientDomainEntity, IClientDomainService, IdValueObject, NameValueObject, TicketAggregate } from "../../../..";
+import { ClientDomainEntity, IClientDomainEntity, IClientDomainService, IdValueObject, NameValueObject, PhoneValueObject, TicketAggregate } from "../../../..";
 import { ClientCreatedClientEventPublisherBase } from "../../../../domain/events/publishers/ticket/client/created-client.event-publisher";
 import { IClientCreateClientCommand } from "../../../../domain/interfaces/commands/ticket/client/create-client.command";
 import { IClientCreatedClientResponse } from "../../../../domain/interfaces/responses/ticket/client/created-client.response";
-import { PhoneValueObject } from "../../../../domain/value-objects/common/phone/phone.value-object";
 
 export class CreateClientUseCase<
     Command extends IClientCreateClientCommand = IClientCreateClientCommand,
@@ -64,6 +63,12 @@ export class CreateClientUseCase<
         if (phone instanceof PhoneValueObject && phone.hasErrors())
             this.setErrors(phone.getErrors())
 
+        console.log("VALUEOB " + valueObject.clientId);
+        console.log("VALUEOB " + valueObject.name);
+        console.log("VALUEOB " + valueObject.phone);
+
+        console.log("VALUEOB " + clientId);
+
         if (this.hasErrors())
             throw new ValueObjectException(
                 'Salary: Hay errres en validateValueObject',
@@ -90,6 +95,6 @@ export class CreateClientUseCase<
     private executeProductAggregateRoot(
         entity: ClientDomainEntity,
     ): Promise<ClientDomainEntity | null> {
-        return this.clientAggregateRoot.createSeller(entity)
+        return this.clientAggregateRoot.createClient(entity)
     }
 }

@@ -8,9 +8,9 @@ export class IdValueObject extends ValueObjectBase<string>{
     }
 
     validateData(): void {
-        if (!this.hasErrors()) {
-            this.validateStructure()
-        }
+        // if (!this.hasErrors()) {
+        //     this.validateStructure()
+        // }
     }
 
     private validateStructure(): void {

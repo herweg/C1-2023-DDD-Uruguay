@@ -16,6 +16,7 @@ import { UpdatedStockPublisher } from "./publisher/counter/product/updated-stock
 import { UpdatedPricePublisher as ProductUpdatedPricePublisher } from "./publisher/counter/product/updated-price.message-publisher";
 import { UpdatedTypePublisher as ProductUpdatedTypePublisher } from "./publisher/counter/product/updated-type.message-publisher";
 import { PersistanceModule } from "../persistence/persistance.module";
+import { CreatedClientPublisher } from "./publisher/ticket/created-client.message-publisher";
 
 /**
  * name: el nombre del cliente.
@@ -73,7 +74,10 @@ import { PersistanceModule } from "../persistence/persistance.module";
         //poster
         UpdatedImagePublisher,
         UpdatedPricePublisher,
-        UpdatedTypePublisher
+        UpdatedTypePublisher,
+
+        //Client
+        CreatedClientPublisher
     ],
     exports: [
         //counter
@@ -92,7 +96,10 @@ import { PersistanceModule } from "../persistence/persistance.module";
         //poster
         UpdatedImagePublisher,
         UpdatedPricePublisher,
-        UpdatedTypePublisher
+        UpdatedTypePublisher,
+        
+        //Client
+        CreatedClientPublisher
     ]
 })
 export class MessagingModule { }

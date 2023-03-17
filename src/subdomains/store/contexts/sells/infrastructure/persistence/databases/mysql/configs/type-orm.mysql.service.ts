@@ -1,7 +1,7 @@
 import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from "@nestjs/typeorm";
-import { CounterMySqlEntity, PosterMySqlEntity, ProductMySqlEntity } from "../entities";
+import { ClientMySqlEntity, CounterMySqlEntity, PosterMySqlEntity, ProductMySqlEntity, SellerMySqlEntity, TicketMySqlEntity } from "../entities";
 import { EventEntity } from "../entities/event.entity";
 
 @Injectable()
@@ -14,6 +14,7 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
         const dbPort = this.configService.get<number>('DB_PORT')
         const dbUser = this.configService.get<string>('DB_USER')
         const dbName = this.configService.get<string>('DB_NAME')
+        const dbPass = this.configService.get<string>('DB_PASSWORD')
 
         // DB_HOST = localhost
         // DB_PORT = 3306
@@ -28,14 +29,17 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
             host: dbHost,
             port: dbPort,
             username: dbUser,
-            password: "1234",
+            password: dbPass,
             database: dbName,
             entities: [
                 EventEntity,
 
                 PosterMySqlEntity,
                 ProductMySqlEntity,
-                CounterMySqlEntity
+                CounterMySqlEntity,
+                ClientMySqlEntity,
+                SellerMySqlEntity,
+                TicketMySqlEntity
             ],
             synchronize: true,
             logging: true

@@ -6,9 +6,9 @@ export class PhoneValueObject extends ValueObjectBase<number>{
     }
 
     validateData(): void {
-        if (!this.hasErrors()) {
-            this.validatePhone()
-        }
+        // if (!this.hasErrors()) {
+        //     this.validatePhone()
+        // }
     }
 
     private validatePhone(): void {

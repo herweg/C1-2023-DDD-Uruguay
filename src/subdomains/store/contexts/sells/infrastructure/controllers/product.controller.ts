@@ -4,7 +4,7 @@ import { UpdatedPricePublisher } from "../messaging/publisher/counter/product/up
 import { UpdatedTypePublisher } from "../messaging/publisher/counter/product/updated-type.message-publisher";
 import { UpdatedExpirationPublisher } from "../messaging/publisher/counter/product/updated-expiration.message-publisher";
 import { UpdatedStockPublisher } from "../messaging/publisher/counter/product/updated-stock.message-publisher";
-import { CounterService, PosterService, ProductService } from "../persistence/services";
+import { CounterService, ProductService } from "../persistence/services";
 import { ProductUpdateExpirationCommand } from "../utils/commands/counter/product/update-expiration.command";
 import { ProductUpdatePriceCommand } from "../utils/commands/counter/product/update-price.command";
 import { ProductUpdateStockCommand } from "../utils/commands/counter/product/update-stock.command";
@@ -18,14 +18,14 @@ export class ProductController {
     constructor(
         private readonly productService: ProductService,
         private readonly counterService: CounterService,
-        
+
         private readonly createdProductPublisher: CreatedProductPublisher,
         private readonly updatedExpirationPublisher: UpdatedExpirationPublisher,
         private readonly updatedPricePublisher: UpdatedPricePublisher,
         private readonly updatedStockPublisher: UpdatedStockPublisher,
         private readonly updatedTypePublisher: UpdatedTypePublisher
-    ) {}
-        
+    ) { }
+
     @Post("/create-product")
     async addProduct(@Body() command: CounterCreateProductCommand) {
         const useCase = new CreateProductUseCase(
@@ -52,7 +52,7 @@ export class ProductController {
         )
         return await useCase.execute(command)
     }
-    
+
     @Patch("/updated-stock")
     async updatedStock(@Body() command: ProductUpdateStockCommand) {
         const useCase = new UpdateStockProductUseCase(
@@ -61,7 +61,7 @@ export class ProductController {
         )
         return await useCase.execute(command)
     }
-    
+
     @Patch("/updated-type")
     async updatedType(@Body() command: ProductUpdateTypeCommand) {
         const useCase = new UpdateTypeProductUseCase(
