@@ -1,4 +1,4 @@
-import { PosterDomainEntity, ProductDomainEntity } from "../entities";
+import { CounterDomainEntity, PosterDomainEntity, ProductDomainEntity } from "../entities";
 import { CounterCreatedCounterEventPublisherBase, CounterCreatedPosterEventPublisherBase, CounterCreatedProductEventPublisherBase, CounterTurnedOffFreezerEventPublisherBase, PosterUpdatedPriceEventPublisherBase } from "../events";
 import { ICounterCreateCounterCommand, IProductUpdateStockCommand } from "../interfaces";
 import { ICounterDomainService, IPosterDomainService, IProductDomainService } from "../services";
@@ -137,7 +137,7 @@ export class CounterAggregate implements
      * @return {*}  {Promise<CounterMySqlEntity>}
      * @memberof CounterAggregate
      */
-    async createCounter(counter: ICounterCreateCounterCommand): Promise<CounterMySqlEntity> {
+    async createCounter(counter: CounterDomainEntity): Promise<CounterMySqlEntity> {
         if (!this.counterService) throw new AggregateRootException("createCounter Service not found.")
         if (!this.counterCreatedCounterEventPublisherBase) throw new AggregateRootException("Event not found.")
 

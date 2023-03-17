@@ -20,18 +20,11 @@ export class CounterMySqlService
         private readonly productMySqlService: ProductMySqlService
     ) { }
 
-    async createCounter(counter: ICounterCreateCounterCommand): Promise<CounterMySqlEntity> {
-        const checkCounter = await this.counterRepository.findById(counter.counterId)
-        if (checkCounter) throw new BadRequestException(`Counter with id: ${counter.counterId} alredy exists`)
+    async createCounter(counter: CounterMySqlEntity): Promise<CounterMySqlEntity> {
+        //const checkCounter = await this.counterRepository.findById(counter.counterId)
+        //if (checkCounter) throw new BadRequestException(`Counter with id: ${counter.counterId} alredy exists`)
 
-        const setPoster = await this.posterMySqlService.getPoster(counter.posterId)
-        const setProduct = await this.productMySqlService.getProduct(counter.productId)
-
-        const newCounter = new CounterMySqlEntity
-        newCounter.product = setProduct
-        newCounter.poster = setPoster
-
-        return await this.counterRepository.create(newCounter)
+        return await this.counterRepository.create(counter)
     }
 
 

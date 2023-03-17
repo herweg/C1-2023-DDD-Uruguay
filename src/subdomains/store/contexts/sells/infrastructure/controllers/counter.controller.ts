@@ -29,14 +29,19 @@ export class CounterController {
     async addCounter(@Body() command: CounterCreateCounterCommand) {
         const useCase = new CreateCounterUseCase(
             this.counterService,
-            this.createdCounterPublisher
+            this.posterService,
+            this.productService,
+            this.createdCounterPublisher,
+            this.gettedProductEventPublisher,
+            this.gettedPosterEventPublisher
         )
         return await useCase.execute(command)
     }
 
+    
     @Get("/get-poster")
     async getPoster(@Body() command: GetPosterCommand) {
-        
+
         const useCase = new GetPosterUseCase(
             this.posterService,
             this.gettedPosterEventPublisher

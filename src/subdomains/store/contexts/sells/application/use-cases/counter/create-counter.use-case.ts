@@ -1,13 +1,9 @@
 /* The CreateCounterUseCase class is a use case that creates a counter */
 import { IUseCase, ValueObjectErrorHandler } from "src/libs";
-import { CounterAggregate, CounterCreatedCounterEventPublisherBase, IClientDomainEntity, ICounterCounterCreatedResponse, ICounterCreateCounterCommand, IdValueObject } from "../../../domain";
+import { CounterAggregate, CounterCreatedCounterEventPublisherBase, GettedPosterEventPublisherBase, GettedProductEventPublisherBase, IClientDomainEntity, ICounterCounterCreatedResponse, ICounterCreateCounterCommand, IdValueObject, IPosterDomainService, IProductDomainService } from "../../../domain";
 import { ICounterDomainService } from '../../../domain/services/counter.domain-service';
 import { CounterDomainEntity } from '../../../domain/entities/counter/counter.domain-entity';
 import { ICounterDomainEntity } from '../../../domain/entities/interfaces/counter.domain-entity.interface';
-import { CreateProductUseCase } from "./create-product.use-case";
-import { GetProductUseCase } from "./get-product.use-case";
-import { GetPosterUseCase } from "./get-poster.use-case";
-
 
 export class CreateCounterUseCase<
     Command extends ICounterCreateCounterCommand = ICounterCreateCounterCommand,
@@ -18,17 +14,23 @@ export class CreateCounterUseCase<
 {
 
     private readonly counterAggregateRoot: CounterAggregate
-    private readonly getProduct: GetProductUseCase
-    private readonly getPoster: GetPosterUseCase
 
     constructor(
         private readonly counterService: ICounterDomainService,
+        private readonly posterService: IPosterDomainService,
+        private readonly productService: IProductDomainService,
         private readonly counterCreatedCounterEventPublisherBase: CounterCreatedCounterEventPublisherBase,
+        private readonly gettedProductEventPublisherBase: GettedProductEventPublisherBase,
+        private readonly gettedPosterEventPublisherBase: GettedPosterEventPublisherBase
     ) {
         super();
         this.counterAggregateRoot = new CounterAggregate({
             counterService,
-            counterCreatedCounterEventPublisherBase
+            posterService,
+            productService,
+            counterCreatedCounterEventPublisherBase,
+            gettedProductEventPublisherBase,
+            gettedPosterEventPublisherBase
         })
     }
 
@@ -40,24 +42,23 @@ export class CreateCounterUseCase<
      */
     async execute(command?: Command): Promise<Response> {
         const data = await this.executeCommand(command);
-
         return { success: data ? true : false, data } as unknown as Response
     }
 
     private async executeCommand(command: Command): Promise<CounterDomainEntity | null> {
-        const entity = this.createEntityCounterDomain(command)
-        return this.exectueOrderAggregateRoot(entity as CounterDomainEntity)
+        const entity = await this.createEntityCounterDomain(command)
+        return await this.exectueOrderAggregateRoot(entity as CounterDomainEntity)
     }
 
     private async createEntityCounterDomain(command: Command): Promise<CounterDomainEntity> {
 
-        const _product = await this.getProduct.execute({ productId: command.productId })
-        const _poster = await this.getPoster.execute({ posterId: command.posterId })
+        const _product = await this.counterAggregateRoot.getProduct(command.productId)
+        const _poster = await this.counterAggregateRoot.getPoster(command.posterId)
 
-        return new CounterDomainEntity({ product: (_product).data.product, poster: (_poster).data.poster })
+        return new CounterDomainEntity({ product: _product, poster: _poster })
     }
 
-    private exectueOrderAggregateRoot(entity: ICounterDomainEntity,): Promise<CounterDomainEntity | null> {
-        return this.counterAggregateRoot.createCounter(entity as ICounterCreateCounterCommand)
+    private exectueOrderAggregateRoot(entity: CounterDomainEntity): Promise<CounterDomainEntity | null> {
+        return this.counterAggregateRoot.createCounter(entity)
     }
 }

@@ -19,16 +19,15 @@ export class CounterRepository
     }
 
     async findById(counterId: string): Promise<CounterMySqlEntity> {
-
         const counter = await this.repository.findOneBy({ counterId })
         if (!counter) throw new BadRequestException(`Counter with id: ${counterId} not found`)
         return counter
     }
 
     async create(entity: CounterMySqlEntity): Promise<CounterMySqlEntity> {
-        const counterEntity = await this.repository.findOneBy({ counterId: entity.counterId })
-        if (counterEntity) throw new BadRequestException(`Counter with id: ${entity.counterId} alredy exists`)
-        return await this.repository.save(counterEntity)
+        //const counterEntity = await this.repository.findOneBy({ counterId: entity.counterId })
+        //if (counterEntity) throw new BadRequestException(`Counter with id: ${entity.counterId} alredy exists`)
+        return await this.repository.save(entity)
     }
 
     async update(counterId: string, entity: CounterMySqlEntity): Promise<CounterMySqlEntity> {
