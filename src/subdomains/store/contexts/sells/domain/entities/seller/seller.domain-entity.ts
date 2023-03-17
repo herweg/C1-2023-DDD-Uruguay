@@ -13,5 +13,4 @@ export class SellerDomainEntity implements ISellerDomainEntity {
         if (data?.name) this.name = data.name
         if (data?.salary) this.salary = data.salary
     }
-
 }

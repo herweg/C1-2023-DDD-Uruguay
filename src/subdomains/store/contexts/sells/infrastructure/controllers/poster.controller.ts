@@ -26,11 +26,15 @@ export class PosterController {
     ) { }
 
     @Post("/create-poster")
-    async addPoster(@Body() command: CounterCreatePosterCommand) {        
+    async addPoster(@Body() command: CounterCreatePosterCommand) {
+        console.log("COMMAND: " + command);
+
         const useCase = new CreatePosterUseCase(
             this.posterService,
             this.createdPosterPublisher
         )
+        
+        console.log("COMMAND EXCECUTE: " + command);
         return await useCase.execute(command)
     }
 

@@ -15,8 +15,7 @@ export class ProductMySqlService
     ) { }
 
     async createProduct(product: ICounterCreateProductCommand): Promise<ProductMySqlEntity> {
-        const newProduct = this.productRepository.create(product)
-        return newProduct
+        return this.productRepository.create(product)
     }
 
     async updateStock(product: ProductMySqlEntity): Promise<ProductMySqlEntity> {

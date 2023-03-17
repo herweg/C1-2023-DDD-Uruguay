@@ -12,9 +12,10 @@ export class PosterMySqlService
         private readonly posterRepository: PosterRepository,
     ) { }
 
-    async createPoster(poster: ICounterCreatePosterCommand): Promise<PosterMySqlEntity> {
-        const newPoster = await this.posterRepository.create(poster)
-        return newPoster
+    async createPoster(poster: PosterMySqlEntity): Promise<PosterMySqlEntity> {
+        console.log("POSTER: "+ poster);
+        
+        return await this.posterRepository.create(poster)
     }
 
     async updateImage(poster: PosterMySqlEntity): Promise<PosterMySqlEntity> {

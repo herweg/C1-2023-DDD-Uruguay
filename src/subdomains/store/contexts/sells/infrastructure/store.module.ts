@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
-import { GetPosterUseCase } from '../application/use-cases/counter/get-poster.use-case';
 import { CounterController } from './controllers/counter.controller';
 import { PosterController } from './controllers/poster.controller';
 import { ProductController } from './controllers/product.controller';
 import { MessagingModule } from './messaging/messaging.module';
+import { PosterEventController } from './messaging/subscriber/poster.subscriber';
+import { CounterEventController } from './messaging/subscriber/counter.subscriber';
+import { ProductEventController } from './messaging/subscriber/product.subscriber';
 import { PersistanceModule } from './persistence/persistance.module';
 
 @Module({
@@ -11,9 +13,13 @@ import { PersistanceModule } from './persistence/persistance.module';
     controllers: [
         CounterController,
         PosterController,
-        ProductController
+        ProductController,
+
+        CounterEventController,
+        PosterEventController,
+        ProductEventController
     ],
-    providers: [GetPosterUseCase],
-    exports: [GetPosterUseCase]
+    providers: [],
+    exports: []
 })
 export class StoreModule { }

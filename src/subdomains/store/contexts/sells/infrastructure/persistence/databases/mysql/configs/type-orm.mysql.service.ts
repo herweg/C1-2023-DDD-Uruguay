@@ -2,6 +2,7 @@ import { Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { TypeOrmOptionsFactory, TypeOrmModuleOptions } from "@nestjs/typeorm";
 import { CounterMySqlEntity, PosterMySqlEntity, ProductMySqlEntity } from "../entities";
+import { EventEntity } from "../entities/event.entity";
 
 @Injectable()
 export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
@@ -30,6 +31,8 @@ export class TypeOrmMySqlConfigService implements TypeOrmOptionsFactory {
             password: "1234",
             database: dbName,
             entities: [
+                EventEntity,
+
                 PosterMySqlEntity,
                 ProductMySqlEntity,
                 CounterMySqlEntity

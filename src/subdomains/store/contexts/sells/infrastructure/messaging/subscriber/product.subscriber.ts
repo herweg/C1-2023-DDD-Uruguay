@@ -1,13 +1,13 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
-import { EventEntity } from "../../persistence/databases/mysql/entities/event.entity";
-import { ProductEntity } from "../../persistence/entities";
-import { ProductService } from "../../persistence/services";
+import { EventService } from '../../persistence/databases/mysql/services/event.service';
+import { EventInfraEntity } from "../../persistence/entities/event.entity";
+import { EventInfraService } from "../../persistence/services/event.service";
 
 @Controller()
-export class ProductController {
+export class ProductEventController {
 
-    constructor(private readonly productService: ProductService) {}
+    constructor(private readonly eventService: EventInfraService) {}
 
     /**
      * EventPattern se utiliza para definir un patrón de evento de Kafka
@@ -28,62 +28,81 @@ export class ProductController {
      */
 
     @EventPattern('store.product-created')
-    createProduct(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    createProduct(@Payload() data: any, @Ctx() context: KafkaContext) {
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
-        this.productService.createProduct(product)
+        //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
     
     @EventPattern('store.product-updated-expiration')
-    updatedExpiration(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedExpiration(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
-        this.productService.updateProductExpiration(product)
+        //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-updated-expiration';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.product-updated-price')
-    updatedPrice(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedPrice(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-
-        const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
-        this.productService.updateProductPrice(product)
+        //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.product-updated-stock')
-    updatedStock(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedStock(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
-        this.productService.updateStock(product)
+        //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.product-updated-type')
-    updatedType(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedType(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
-        this.productService.updateProductType(product)
+        //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 }

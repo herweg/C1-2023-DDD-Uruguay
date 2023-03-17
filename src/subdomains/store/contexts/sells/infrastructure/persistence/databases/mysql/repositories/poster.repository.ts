@@ -26,6 +26,8 @@ export class PosterRepository
     }
 
     async create(entity: PosterMySqlEntity): Promise<PosterMySqlEntity> {
+        console.log("FLAVOUR"+entity.flavour);
+        
         return await this.repository.save(entity)
     }
 

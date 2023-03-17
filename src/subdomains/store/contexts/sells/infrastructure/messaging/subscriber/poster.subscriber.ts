@@ -1,11 +1,11 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
-import { EventEntity } from "../../persistence/databases/mysql/entities/event.entity";
 import { PosterEntity } from "../../persistence/entities";
+import { EventInfraEntity } from "../../persistence/entities/event.entity";
 import { PosterService } from "../../persistence/services";
 
 @Controller()
-export class PosterController {
+export class PosterEventController {
     constructor(private readonly posterService: PosterService) { }
     
     /**
@@ -27,7 +27,7 @@ export class PosterController {
      */
 
     // @EventPattern('store.poster-created')
-    // posterCreated(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    // posterCreated(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
     //     console.log('--------------------------------------')
     //     console.log('Data: ', data.data)
@@ -39,7 +39,7 @@ export class PosterController {
     // }
 
     @EventPattern('store.poster-updated-image')
-    updatedImage(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedImage(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
@@ -51,7 +51,7 @@ export class PosterController {
     }
 
     @EventPattern('store.poster-updated-price')
-    updatedPrice(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedPrice(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
@@ -63,7 +63,7 @@ export class PosterController {
     }
 
     @EventPattern('store.poster-updated-type')
-    updatedType(@Payload() data: EventEntity, @Ctx() context: KafkaContext) {
+    updatedType(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)

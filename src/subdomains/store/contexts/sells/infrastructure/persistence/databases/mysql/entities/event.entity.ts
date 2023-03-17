@@ -2,7 +2,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 
 @Entity('event', { schema: 'public' })
-export class EventEntity   {
+export class EventEntity {
 
   @PrimaryGeneratedColumn('uuid')
   eventID: string;
@@ -10,9 +10,9 @@ export class EventEntity   {
   @Column()
   type: string;
 
-  @Column()
+  @Column({ length: 1000 })
   data: string;
 
   @Column()
-  createAt: string;
+  createdAt: string;
 }

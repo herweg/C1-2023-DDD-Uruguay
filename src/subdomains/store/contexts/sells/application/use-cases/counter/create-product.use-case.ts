@@ -29,8 +29,14 @@ export class CreateProductUseCase<
 
     executeCommand(command: Command): Promise<ProductDomainEntity | null> {
         const valueObject = this.createValueObject(command)
+        console.log("executeCommand "+command);
+        
         this.validateValueObject(valueObject)
+        console.log("executeCommand "+valueObject);
+
         const product = this.createEntityProductDomain(valueObject)
+        
+        console.log("executeCommand "+product);
         return this.executeProductAggregateRoot(product)
     }
 

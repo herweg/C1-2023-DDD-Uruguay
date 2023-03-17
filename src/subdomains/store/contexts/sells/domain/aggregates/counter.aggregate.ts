@@ -151,8 +151,12 @@ export class CounterAggregate implements
         if (!this.posterService) throw new AggregateRootException("posterService not found.")
         if (!this.counterCreatedPosterEventPublisherBase) throw new AggregateRootException("Event not found.")
 
+        console.log("poster: "+poster);
+        
         this.counterCreatedPosterEventPublisherBase.response = poster
         this.counterCreatedPosterEventPublisherBase.publish()
+        
+        console.log("poster: "+poster);
         return poster
     }
 
@@ -162,6 +166,8 @@ export class CounterAggregate implements
 
         this.counterCreatedProductEventPublisherBase.response = product
         this.counterCreatedProductEventPublisherBase.publish()
+        
+        console.log("product: "+product);
         return product
     }
 

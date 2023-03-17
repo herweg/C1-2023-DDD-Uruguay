@@ -15,11 +15,6 @@ import { UpdatedExpirationPublisher } from "./publisher/counter/product/updated-
 import { UpdatedStockPublisher } from "./publisher/counter/product/updated-stock.message-publisher";
 import { UpdatedPricePublisher as ProductUpdatedPricePublisher } from "./publisher/counter/product/updated-price.message-publisher";
 import { UpdatedTypePublisher as ProductUpdatedTypePublisher } from "./publisher/counter/product/updated-type.message-publisher";
-
-import { CounterController } from "./subscriber/counter.subscriber";
-import { PosterController } from "./subscriber/poster.subscriber";
-import { ProductController } from "./subscriber/product.subscriber";
-import { ProductService } from "../persistence/services";
 import { PersistanceModule } from "../persistence/persistance.module";
 
 /**
@@ -59,9 +54,7 @@ import { PersistanceModule } from "../persistence/persistance.module";
         PersistanceModule
     ],
     controllers: [
-        CounterController,
-        ProductController,
-        PosterController
+
     ],
     providers: [
         //Counter

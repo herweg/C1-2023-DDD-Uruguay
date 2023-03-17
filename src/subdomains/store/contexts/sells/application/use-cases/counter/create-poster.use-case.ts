@@ -49,12 +49,12 @@ export class CreatePosterUseCase<
     }
 
     createValueObject(command: Command): PosterDomainEntity {
-        const posterId = new IdValueObject(command?.posterId)//command?.posterId
-        const type = command?.type //new PosterTypeValueObject(command.type)
-        const flavour =command?.flavour //new FlavourValueObject(command.flavour)
-        const price = command?.price //new PriceValueObject(command.price)
-        const stock = command?.stock //new StockValueObject(command.stock)
-        const image = command?.image //new ImageValueObject(command.image)
+        const posterId = new IdValueObject(command?.posterId)
+        const type =  new PosterTypeValueObject(command.type)
+        const flavour = new FlavourValueObject(command.flavour)
+        const price = new PriceValueObject(command.price)
+        const stock =  new StockValueObject(command.stock)
+        const image = new ImageValueObject(command.image)
 
         return {
             posterId,
@@ -102,24 +102,22 @@ export class CreatePosterUseCase<
         valueObject: IPosterDomainEntity
     ): PosterDomainEntity {
         const {
-            //posterId,
+            posterId,
             type,
             flavour,
             price,
             stock,
             image
         } = valueObject
-
-        console.log("valueObjectTT"+valueObject);
         
         if (type instanceof PosterTypeValueObject && flavour instanceof FlavourValueObject)
         return new PosterDomainEntity({
-            //posterId: posterId.valueOf(),
-            type: type,
-            flavour: flavour,
+            posterId: posterId.valueOf(),
+            type: type.value,
+            flavour: flavour.value,
             price: price.valueOf(),
             stock: stock.valueOf(),
-            image: image
+            image: image.valueOf()
         })
     }
 
