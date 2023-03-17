@@ -29,23 +29,17 @@ export class CreateProductUseCase<
 
     executeCommand(command: Command): Promise<ProductDomainEntity | null> {
         const valueObject = this.createValueObject(command)
-        console.log("executeCommand "+command);
-        
         this.validateValueObject(valueObject)
-        console.log("executeCommand "+valueObject);
-
         const product = this.createEntityProductDomain(valueObject)
-        
-        console.log("executeCommand "+product);
         return this.executeProductAggregateRoot(product)
     }
 
     createValueObject(command: Command): IProductDomainEntity {
         const productId = new IdValueObject(command.productId)
-        const type = command?.type// new ProductTypeValueObject(command.type)
-        const flavour = command?.flavour// new FlavourValueObject(command.flavour)
-        const price = command?.price//new PriceValueObject(command.price)
-        const stock = command?.stock//new StockValueObject(command.stock)
+        const type = new ProductTypeValueObject(command.type)
+        const flavour = new FlavourValueObject(command.flavour)
+        const price = new PriceValueObject(command.price)
+        const stock = new StockValueObject(command.stock)
         const expirationDate = command?.expirationDate//new DateValueObject(command.expirationDate)
 
         return {
@@ -98,10 +92,11 @@ export class CreateProductUseCase<
             stock,
             expirationDate
         } = valueObject
-        
+
+        if (type instanceof ProductTypeValueObject && flavour instanceof FlavourValueObject)
         return new ProductDomainEntity({
-            type: type,
-            flavour: flavour,
+            type: type.value,
+            flavour: flavour.value,
             price: price.valueOf(),
             stock: stock.valueOf(),
             expirationDate: expirationDate
