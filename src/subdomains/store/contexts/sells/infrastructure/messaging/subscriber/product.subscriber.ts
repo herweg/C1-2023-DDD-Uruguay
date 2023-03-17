@@ -1,6 +1,6 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
-import { EventService } from '../../persistence/databases/mysql/services/event.service';
+
 import { EventInfraEntity } from "../../persistence/entities/event.entity";
 import { EventInfraService } from "../../persistence/services/event.service";
 
@@ -29,6 +29,7 @@ export class ProductEventController {
 
     @EventPattern('store.product-created')
     createProduct(@Payload() data: any, @Ctx() context: KafkaContext) {
+
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
@@ -69,7 +70,7 @@ export class ProductEventController {
         //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.product-updated-price';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }
@@ -85,7 +86,7 @@ export class ProductEventController {
         //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.product-updated-stock';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }
@@ -101,7 +102,7 @@ export class ProductEventController {
         //const product: ProductEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.product-updated-type';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }

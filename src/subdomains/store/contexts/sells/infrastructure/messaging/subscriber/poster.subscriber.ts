@@ -5,6 +5,7 @@ import { EventInfraService } from "../../persistence/services/event.service";
 
 @Controller()
 export class PosterEventController {
+
     constructor(private readonly eventService: EventInfraService) { }
     
     /**
@@ -36,7 +37,7 @@ export class PosterEventController {
         //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.poster-created';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }
@@ -52,7 +53,7 @@ export class PosterEventController {
         //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.poster-updated-image';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }
@@ -68,7 +69,7 @@ export class PosterEventController {
         //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.poster-updated-price';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }
@@ -84,7 +85,7 @@ export class PosterEventController {
         //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
         const event = new EventInfraEntity();
         event.data = JSON.stringify(data);
-        event.type = 'store.product-created';
+        event.type = 'store.poster-updated-type';
         event.createdAt = Date();
         this.eventService.createEvent(event)
     }
