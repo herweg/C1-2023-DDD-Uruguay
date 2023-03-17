@@ -43,7 +43,7 @@ export class ProductEventController {
     }
     
     @EventPattern('store.product-updated-expiration')
-    updatedExpiration(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
+    updatedExpiration(@Payload() data: any, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
@@ -59,7 +59,7 @@ export class ProductEventController {
     }
 
     @EventPattern('store.product-updated-price')
-    updatedPrice(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
+    updatedPrice(@Payload() data: any, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
@@ -75,7 +75,7 @@ export class ProductEventController {
     }
 
     @EventPattern('store.product-updated-stock')
-    updatedStock(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
+    updatedStock(@Payload() data: any, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)

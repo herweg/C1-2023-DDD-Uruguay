@@ -30,6 +30,7 @@ import { CounterMySqlService } from './services/counter.service';
 
         TypeOrmModule.forFeature([
             EventEntity,
+            
             PosterMySqlEntity,
             ProductMySqlEntity,
             CounterMySqlEntity

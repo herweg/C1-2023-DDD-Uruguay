@@ -142,6 +142,7 @@ export class CounterAggregate implements
         if (!this.counterCreatedCounterEventPublisherBase) throw new AggregateRootException("Event not found.")
 
         const counterResult = await this.counterService.createCounter(counter)
+        
         this.counterCreatedCounterEventPublisherBase.response = counterResult
         this.counterCreatedCounterEventPublisherBase.publish()
         return counterResult
@@ -151,24 +152,24 @@ export class CounterAggregate implements
         if (!this.posterService) throw new AggregateRootException("posterService not found.")
         if (!this.counterCreatedPosterEventPublisherBase) throw new AggregateRootException("Event not found.")
 
-        console.log("poster: "+poster);
-        
+        const result = this.posterService.createPoster(poster)
+
         this.counterCreatedPosterEventPublisherBase.response = poster
         this.counterCreatedPosterEventPublisherBase.publish()
-        
-        console.log("poster: "+poster);
-        return poster
+
+        return result
     }
 
     async createProduct(product: ProductDomainEntity): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("productService not found")
         if (!this.counterCreatedProductEventPublisherBase) throw new AggregateRootException("Create product event not found")
 
+        const result = this.productService.createProduct(product)
+
         this.counterCreatedProductEventPublisherBase.response = product
         this.counterCreatedProductEventPublisherBase.publish()
         
-        console.log("product: "+product);
-        return product
+        return result
     }
 
     async turnOffFreezer(counterId: string, turnOff: boolean): Promise<boolean> {
@@ -197,6 +198,7 @@ export class CounterAggregate implements
         if (!this.gettedPosterEventPublisherBase) throw new AggregateRootException("getPoster event not found")
 
         const poster = await this.posterService.getPoster(posterId)
+
         this.gettedPosterEventPublisherBase.response = poster
         this.gettedPosterEventPublisherBase.publish()
         return poster
@@ -207,6 +209,7 @@ export class CounterAggregate implements
         if (!this.gettedProductEventPublisherBase) throw new AggregateRootException("getProduct event not found")
 
         const product = await this.productService.getProduct(productId)
+
         this.gettedProductEventPublisherBase.response = product
         this.gettedProductEventPublisherBase.publish()
         return product
@@ -224,36 +227,45 @@ export class CounterAggregate implements
         if (!this.productService) throw new AggregateRootException("updateStock service not found")
         if (!this.productUpdatedStockEventPublisherBase) throw new AggregateRootException("PRODUCT Update stock event not found")
 
+        
+        const result = this.productService.updateStock(product)
+        
         this.productUpdatedStockEventPublisherBase.response = product
         this.productUpdatedStockEventPublisherBase.publish()
-        return product
+        return result
     }
     
     async updateProductPrice(product: ProductDomainEntity): Promise<ProductDomainEntity> {        
         if (!this.productService) throw new AggregateRootException("updateProductPrice service not found")
         if (!this.productUpdatedPriceEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
+        const result = this.productService.updateProductPrice(product)
+
         this.productUpdatedPriceEventPublisherBase.response = product
         this.productUpdatedPriceEventPublisherBase.publish()
-        return product
+        return result
     }
 
     async updateProductType(product: ProductDomainEntity): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("updateProductType service not found")
         if (!this.productUpdatedTypeEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
+        const result = this.productService.updateProductType(product)
+
         this.productUpdatedTypeEventPublisherBase.response = product
         this.productUpdatedTypeEventPublisherBase.publish()
-        return product
+        return result
     }
 
     async updateProductExpiration(product: ProductDomainEntity): Promise<ProductDomainEntity> {
         if (!this.productService) throw new AggregateRootException("updateProductExpiration service not found")
         if (!this.productUpdatedExpirationEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
+        const result = this.productService.updateProductExpiration(product)
+
         this.productUpdatedExpirationEventPublisherBase.response = product
         this.productUpdatedExpirationEventPublisherBase.publish()
-        return product
+        return result
     }
 
     /**
@@ -269,6 +281,7 @@ export class CounterAggregate implements
         if (!this.posterUpdatedImageEventPublisherBase) throw new AggregateRootException("Event not found.")
 
         const imageResult = await this.posterService.updateImage(poster)
+
         this.posterUpdatedImageEventPublisherBase.response = imageResult
         this.posterUpdatedImageEventPublisherBase.publish()
         return imageResult
@@ -279,6 +292,7 @@ export class CounterAggregate implements
         if (!this.posterUpdatedPriceEventPublisherBase) throw new AggregateRootException("Event not found.")
 
         const posterResult = await this.posterService.updatePosterPrice(poster)
+
         this.posterUpdatedPriceEventPublisherBase.response = posterResult
         this.posterUpdatedPriceEventPublisherBase.publish()
         return posterResult
@@ -289,6 +303,7 @@ export class CounterAggregate implements
         if (!this.posterUpdatedTypeEventPublisherBase) throw new AggregateRootException("Updated Price event not found")
 
         const typeResult = await this.posterService.updatePosterType(poster)
+
         this.posterUpdatedTypeEventPublisherBase.response = typeResult
         this.posterUpdatedTypeEventPublisherBase.publish()
         return typeResult

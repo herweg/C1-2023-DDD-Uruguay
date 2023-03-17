@@ -50,10 +50,10 @@ export class CreatePosterUseCase<
 
     createValueObject(command: Command): PosterDomainEntity {
         const posterId = new IdValueObject(command?.posterId)
-        const type =  new PosterTypeValueObject(command.type)
+        const type = new PosterTypeValueObject(command.type)
         const flavour = new FlavourValueObject(command.flavour)
         const price = new PriceValueObject(command.price)
-        const stock =  new StockValueObject(command.stock)
+        const stock = new StockValueObject(command.stock)
         const image = new ImageValueObject(command.image)
 
         return {
@@ -109,21 +109,23 @@ export class CreatePosterUseCase<
             stock,
             image
         } = valueObject
-        
+
         if (type instanceof PosterTypeValueObject && flavour instanceof FlavourValueObject)
-        return new PosterDomainEntity({
-            posterId: posterId.valueOf(),
-            type: type.value,
-            flavour: flavour.value,
-            price: price.valueOf(),
-            stock: stock.valueOf(),
-            image: image.valueOf()
-        })
+            return new PosterDomainEntity({
+                posterId: posterId.valueOf(),
+                type: type.value,
+                flavour: flavour.value,
+                price: price.valueOf(),
+                stock: stock.valueOf(),
+                image: image.valueOf()
+            })
     }
 
     private executePosterAggregateRoot(
         entity: PosterDomainEntity,
     ): Promise<PosterDomainEntity | null> {
+        console.log("ENTITY : "+entity);
+        
         return this.counterAggregateRoot.createPoster(entity)
     }
 }

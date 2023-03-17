@@ -15,7 +15,7 @@ export class DateValueObject extends ValueObjectBase<Date>{
         if (isNaN(this.value.getTime())) {
             const error = {
                 field: "Date",
-                message: `${this.value} is not a valid date`
+                message: `is not a valid date`
             }
             this.setError(error)
         }

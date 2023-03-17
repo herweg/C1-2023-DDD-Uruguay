@@ -34,7 +34,7 @@ export class PosterController {
             this.createdPosterPublisher
         )
         
-        console.log("COMMAND EXCECUTE: " + command);
+        console.log("COMMAND EXCECUTE: " + command.flavour);
         return await useCase.execute(command)
     }
 
