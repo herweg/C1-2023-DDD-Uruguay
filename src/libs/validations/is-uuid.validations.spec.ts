@@ -1,7 +1,8 @@
-import { IsUrl } from "./";
+import { IsUUID } from ".";
 
-describe('IsUrl', () => {
-    let validador: typeof IsUrl
+
+describe('IsUUID', () => {
+    let validador: typeof IsUUID
   
     // Antes de todas las pruebas
     beforeAll(() => {})
@@ -9,7 +10,7 @@ describe('IsUrl', () => {
     // Antes de cada prueba
     beforeEach(() => {
       // Arrange
-      validador = IsUrl
+      validador = IsUUID
     })
   
     it('esto debería definir la función', () => {
@@ -19,11 +20,11 @@ describe('IsUrl', () => {
   
     it('debería ser verdadero', () => {
       // Arrange
-      const url = "http://test.com"
+      const uuid = "1d8b4c0d-a875-43da-a1bb-c7a17047b81b"
       const expected = true
   
       // Act
-      const result = validador(url)
+      const result = validador(uuid)
   
       // Assert
       expect(result).toEqual(expected)
@@ -31,11 +32,11 @@ describe('IsUrl', () => {
   
     it('debería ser falso', () => {
       // Arrange
-      const url = "http:testcom"
+      const uuid = "http:testcom"
       const expected = false
   
       // Act
-      const result = validador(url)
+      const result = validador(uuid)
   
       // Assert
       expect(result).toEqual(expected)

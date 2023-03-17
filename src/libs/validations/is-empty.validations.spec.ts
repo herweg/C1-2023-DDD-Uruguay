@@ -1,8 +1,8 @@
-import { IsPhone } from "./";
+import { IsEmpty } from ".";
 
 
-describe('IsPhone', () => {
-    let validador: typeof IsPhone
+describe('IsEmpty', () => {
+    let validador: typeof IsEmpty
   
     // Antes de todas las pruebas
     beforeAll(() => {})
@@ -10,7 +10,7 @@ describe('IsPhone', () => {
     // Antes de cada prueba
     beforeEach(() => {
       // Arrange
-      validador = IsPhone
+      validador = IsEmpty
     })
   
     it('esto debería definir la función', () => {
@@ -20,11 +20,11 @@ describe('IsPhone', () => {
   
     it('debería ser verdadero', () => {
       // Arrange
-      const phone = 099123456
+      const empty = ""
       const expected = true
   
       // Act
-      const result = validador(phone)
+      const result = validador(empty)
   
       // Assert
       expect(result).toEqual(expected)
@@ -32,11 +32,11 @@ describe('IsPhone', () => {
   
     it('debería ser falso', () => {
       // Arrange
-      const phone = 99999050581
+      const empty = "http:testcom"
       const expected = false
   
       // Act
-      const result = validador(phone)
+      const result = validador(empty)
   
       // Assert
       expect(result).toEqual(expected)
