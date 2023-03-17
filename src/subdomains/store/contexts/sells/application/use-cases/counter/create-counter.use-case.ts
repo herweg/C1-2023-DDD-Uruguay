@@ -1,3 +1,4 @@
+/* The CreateCounterUseCase class is a use case that creates a counter */
 import { IUseCase, ValueObjectErrorHandler } from "src/libs";
 import { CounterAggregate, CounterCreatedCounterEventPublisherBase, IClientDomainEntity, ICounterCounterCreatedResponse, ICounterCreateCounterCommand, IdValueObject } from "../../../domain";
 import { ICounterDomainService } from '../../../domain/services/counter.domain-service';
@@ -16,8 +17,7 @@ export class CreateCounterUseCase<
     implements IUseCase<Command, Response>
 {
 
-    private readonly counterAggregateRoot: CounterAggregate;
-    private readonly createProductUseCase: CreateProductUseCase
+    private readonly counterAggregateRoot: CounterAggregate
     private readonly getProduct: GetProductUseCase
     private readonly getPoster: GetPosterUseCase
 
@@ -32,6 +32,12 @@ export class CreateCounterUseCase<
         })
     }
 
+    /**
+     * If the command is executed successfully, return the data, otherwise return false.
+     * @param {Command} [command] - Command - The command to execute.
+     * @returns The return type is Response, but the return value is an object with a success property and
+     * a data property.
+     */
     async execute(command?: Command): Promise<Response> {
         const data = await this.executeCommand(command);
 
