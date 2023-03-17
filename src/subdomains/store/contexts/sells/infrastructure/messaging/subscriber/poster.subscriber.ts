@@ -1,12 +1,11 @@
 import { Controller } from "@nestjs/common";
 import { Ctx, EventPattern, KafkaContext, Payload } from "@nestjs/microservices";
-import { PosterEntity } from "../../persistence/entities";
 import { EventInfraEntity } from "../../persistence/entities/event.entity";
-import { PosterService } from "../../persistence/services";
+import { EventInfraService } from "../../persistence/services/event.service";
 
 @Controller()
 export class PosterEventController {
-    constructor(private readonly posterService: PosterService) { }
+    constructor(private readonly eventService: EventInfraService) { }
     
     /**
      * EventPattern se utiliza para definir un patrón de evento de Kafka
@@ -26,51 +25,67 @@ export class PosterEventController {
      * @memberof PosterController
      */
 
-    // @EventPattern('store.poster-created')
-    // posterCreated(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
-
-    //     console.log('--------------------------------------')
-    //     console.log('Data: ', data.data)
-    //     console.log('--------------------------------------')
-    //     console.log('Context: ', context)
-    //     console.log('--------------------------------------')
-    //     const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
-    //     this.posterService.createPoster(poster)
-    // }
-
-    @EventPattern('store.poster-updated-image')
-    updatedImage(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
+    @EventPattern('store.poster-created')
+    posterCreated(@Payload() data: any, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
-        this.posterService.updateImage(poster)
+        //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
+    }
+
+    @EventPattern('store.poster-updated-image')
+    updatedImage(@Payload() data: any, @Ctx() context: KafkaContext) {
+
+        console.log('--------------------------------------')
+        console.log('Data: ', data.data)
+        console.log('--------------------------------------')
+        console.log('Context: ', context)
+        console.log('--------------------------------------')
+        //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.poster-updated-price')
-    updatedPrice(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
+    updatedPrice(@Payload() data: any, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
-        this.posterService.updatePosterPrice(poster)
+        //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 
     @EventPattern('store.poster-updated-type')
-    updatedType(@Payload() data: EventInfraEntity, @Ctx() context: KafkaContext) {
+    updatedType(@Payload() data: any, @Ctx() context: KafkaContext) {
 
         console.log('--------------------------------------')
         console.log('Data: ', data.data)
         console.log('--------------------------------------')
         console.log('Context: ', context)
         console.log('--------------------------------------')
-        const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
-        this.posterService.updatePosterType(poster)
+        //const poster: PosterEntity = JSON.parse(JSON.stringify(data.data))
+        const event = new EventInfraEntity();
+        event.data = JSON.stringify(data);
+        event.type = 'store.product-created';
+        event.createdAt = Date();
+        this.eventService.createEvent(event)
     }
 }
